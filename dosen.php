@@ -1,16 +1,47 @@
 <?php
-$mysqli = new mysqli("localhost", "root",'', "fullstack");
+require_once("parent.php");
 
-if ($mysqli->connect_error) {
-    die("Koneksi Gagal: " . $mysqli->connect_error);
+class Dosen extends classParent {
+    public function getAll() {
+        $sql = "SELECT * FROM dosen";
+        $stmt = $this->mysqli->prepare($sql);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $data = [];
+        while ($row = $res->fetch_assoc()) {
+            $data[] = $row;
+        }
+        $stmt->close();
+        return $data;
+    }
 }
+
+$dosenObj = new Dosen();
+$dosens = $dosenObj->getAll();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Daftar Dosen</title>
+    <style>
+        table {
+            border-collapse: collapse; 
+            width: 100%; 
+        }
+        th, td {
+            border: 1px solid black; 
+            padding: 10px; 
+            text-align: center;
+        }
+        th {
+            background-color:#f2f2f2; 
+        }
+        img.foto {
+            width: 150px; 
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -24,13 +55,7 @@ if ($mysqli->connect_error) {
             </div>
             <div class="content">
                 <h2>Daftar Dosen</h2>
-                <form method="GET" action="dosen.php">
-                    Masukkan Nama:
-                    <input type="text" name="nama" value="<?php echo htmlspecialchars($search_term); ?>">
-                    <button type="submit">Cari</button>
-                </form>
-                <br>
-                <a href="tambah_dosen.php"><button>Tambah Dosen Baru</button></a>
+                <button onclick="location.href='tambah_dosen.php'">Tambah Dosen Baru</button>
                 <br><br>
                 <table>
                     <thead>
@@ -39,42 +64,26 @@ if ($mysqli->connect_error) {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                        $sql = "SELECT * FROM dosen";
-                        if (!empty($search_term)) {
-                            $sql .= " WHERE nama LIKE ?";
-                            $param = "%" . $search_term . "%";
-                        }
-                        $stmt = $mysqli->prepare($sql);
-                        if (!empty($search_term)) {
-                            $stmt->bind_param("s", $param);
-                        }
-                        $stmt->execute();
-                        $res = $stmt->get_result();
-                        while ($row = $res->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>";
-                            if (!empty($row['foto_extension'])) {
-                                $image_path = 'images/' . $row['npk'] . '.' . $row['foto_extension'];
-                                if (file_exists($image_path)) {
-                                    echo "<img src='{$image_path}' class='foto'>";
-                                } else {
-                                    echo "No file";
-                                }
-                            } else {
-                                echo "No Image";
-                            }
-                            echo "</td>";
-                            echo "<td>" . htmlspecialchars($row['npk']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['nama']) . "</td>";
-                            echo "<td>
-                                  <a href='edit_dosen.php?npk=" . $row['npk'] . "'>Edit</a> |
-                                  <a href='hapus_dosen.php?npk=" . $row['npk'] . "' onclick='return confirm(\"Yakin?\")'>Hapus</a>
-                                  </td>";
-                            echo "</tr>";
-                        }
-                        $stmt->close();
-                        ?>
+                        <?php foreach ($dosens as $row): ?>
+                            <tr>
+                                <td>
+                                    <?php 
+                                    $image_path = 'images/' . $row['npk'] . '.jpg';
+                                    if (file_exists($image_path)) {
+                                        echo "<img src='{$image_path}' class='foto'>";
+                                    } else {
+                                        echo "No Image";
+                                    }
+                                    ?>
+                                </td>
+                                <td><?php echo htmlspecialchars($row['npk']); ?></td>
+                                <td><?php echo htmlspecialchars($row['nama']); ?></td>
+                                <td>
+                                    <a href="edit_dosen.php?npk=<?php echo $row['npk']; ?>">Edit</a> |
+                                    <a href="hapus_dosen.php?npk=<?php echo $row['npk']; ?>" onclick="return confirm('Yakin hapus data ini?')">Hapus</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>

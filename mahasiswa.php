@@ -1,16 +1,48 @@
 <?php
-$mysqli = new mysqli("localhost", "root", '', "fullstack");
+require_once("parent.php");
 
-if ($mysqli->connect_error) {
-    die("Koneksi Gagal: " . $mysqli->connect_error);
+class Mahasiswa extends classParent {
+    public function getAll() {
+        $sql = "SELECT * FROM mahasiswa";
+        $stmt = $this->mysqli->prepare($sql);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $data = [];
+        while ($row = $res->fetch_assoc()) {
+            $data[] = $row;
+        }
+        $stmt->close();
+        return $data;
+    }
 }
+
+$mhsObj = new Mahasiswa();
+$mahasiswas = $mhsObj->getAll();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Daftar Mahasiswa</title>
+    <style>
+        table {
+            border-collapse: collapse; 
+            width: 100%; /
+        }
+        th, td {
+            border: 1px solid black; 
+            padding: 10px; 
+            text-align: center;
+        }
+        th {
+            background-color:#f2f2f2;
+        }
+        img.foto {
+            width: 150px; 
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -20,64 +52,48 @@ if ($mysqli->connect_error) {
         <div class="main-content">
             <div class="menu">
                 <h3>Menu</h3>
-                <a href="dosen.php">Kelola Dosen</a>
+                <a href="dosen.php">Kelola Dosen</a><br>
             </div>
             <div class="content">
                 <h2>Daftar Mahasiswa</h2>
-                <form method="GET" action="mahasiswa.php">
-                    Masukkan Nama:
-                    <input type="text" name="nama" value="<?php echo htmlspecialchars($search_term); ?>">
-                    <button type="submit">Cari</button>
-                </form>
-                <br>
-                <a href="tambah_mahasiswa.php"><button>Tambah Mahasiswa Baru</button></a>
+                <button onclick="location.href='tambah_mahasiswa.php'">Tambah Mahasiswa Baru</button>
                 <br><br>
                 <table>
                     <thead>
                         <tr>
-                            <th>Foto</th><th>NRP</th><th>Nama</th><th>Gender</th><th>Tgl. Lahir</th><th>Angkatan</th><th>Aksi</th>
+                            <th>Foto</th>
+                            <th>NRP</th>
+                            <th>Nama</th>
+                            <th>Gender</th>
+                            <th>Tgl. Lahir</th>
+                            <th>Angkatan</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                        $sql = "SELECT * FROM mahasiswa";
-                        if (!empty($search_term)) {
-                            $sql .= " WHERE nama LIKE ?";
-                            $param = "%" . $search_term . "%";
-                        }
-                        $stmt = $mysqli->prepare($sql);
-                        if (!empty($search_term)) {
-                            $stmt->bind_param("s", $param);
-                        }
-                        $stmt->execute();
-                        $res = $stmt->get_result();
-                        while ($row = $res->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>";
-                            if (!empty($row['foto_extension'])) {
-                                $image_path = 'uploads/' . $row['nrp'] . '.' . $row['foto_extension'];
-                                if (file_exists($image_path)) {
-                                    echo "<img src='{$image_path}' class='foto'>";
-                                } else {
-                                    echo "No file";
-                                }
-                            } else {
-                                echo "No Image";
-                            }
-                            echo "</td>";
-                            echo "<td>" . htmlspecialchars($row['nrp']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['nama']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['gender']) . "</td>";
-                            echo "<td>" . date("d M Y", strtotime($row['tanggal_lahir'])) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['angkatan']) . "</td>";
-                            echo "<td>
-                                  <a href='edit_mahasiswa.php?nrp=" . $row['nrp'] . "'>Edit</a> |
-                                  <a href='hapus_mahasiswa.php?nrp=" . $row['nrp'] . "' onclick='return confirm(\"Yakin?\")'>Hapus</a>
-                                  </td>";
-                            echo "</tr>";
-                        }
-                        $stmt->close();
-                        ?>
+                        <?php foreach ($mahasiswas as $row): ?>
+                            <tr>
+                                <td>
+                                    <?php 
+                                    $image_path = 'images/' . $row['nrp'] . '.jpg';
+                                    if (file_exists($image_path)) {
+                                        echo "<img src='{$image_path}' class='foto'>";
+                                    } else {
+                                        echo "No Image";
+                                    }
+                                    ?>
+                                </td>
+                                <td><?php echo htmlspecialchars($row['nrp']); ?></td>
+                                <td><?php echo htmlspecialchars($row['nama']); ?></td>
+                                <td><?php echo htmlspecialchars($row['gender']); ?></td>
+                                <td><?php echo date("d M Y", strtotime($row['tanggal_lahir'])); ?></td>
+                                <td><?php echo htmlspecialchars($row['angkatan']); ?></td>
+                                <td>
+                                    <a href="edit_mahasiswa.php?nrp=<?php echo $row['nrp']; ?>">Edit</a> |
+                                    <a href="hapus_mahasiswa.php?nrp=<?php echo $row['nrp']; ?>" onclick="return confirm('Yakin hapus data ini?')">Hapus</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>

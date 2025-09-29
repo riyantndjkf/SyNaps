@@ -1,8 +1,8 @@
 <?php
-$mysqli = new mysqli("localhost", "root", "", "fullstack");
+$mysqli = new mysqli("localhost", "root",'', "fullstack");
 
 if ($mysqli->connect_error) {
-    die("Koneksi Gagal: " . $mysqli->connect_error);
+    echo "Koneksi Gagal: " . $mysqli->connect_error;
 }
 
 // Ambil data dari form
