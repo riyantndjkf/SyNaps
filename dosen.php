@@ -8,17 +8,15 @@ class Dosen extends classParent {
 
     public function getDosen($npk = null) {
         if ($npk) {
-            // kalau ada parameter NPK, ambil hanya satu dosen
             $sql = "SELECT * FROM dosen WHERE npk=?";
             $stmt = $this->mysqli->prepare($sql);
             $stmt->bind_param("s", $npk);
             $stmt->execute();
             $res = $stmt->get_result();
-            $data = $res->fetch_assoc(); // satu baris saja
+            $data = $res->fetch_assoc(); 
             $stmt->close();
             return $data;
         } else {
-            // kalau tidak ada parameter, ambil semua dosen
             $sql = "SELECT * FROM dosen";
             $stmt = $this->mysqli->prepare($sql);
             $stmt->execute();
@@ -33,29 +31,20 @@ class Dosen extends classParent {
     }
 
     public function insertDosen($arr_data) {
-
         $query = "INSERT INTO dosen (npk, nama, foto_extension) VALUES (?, ?, ?)";
         $stmt = $this->mysqli->prepare($query);
         $stmt->bind_param("sss", $arr_data['npk'], $arr_data['nama'], $arr_data['foto_extension']);
 
-        $stmt->execute();
-        
-        return $stmt->insert_id;
-
-        $stmt->close();
+        return $stmt->execute();
     } 
 
-    public function updateDosen($npk, $arr_data) {
-            
+    public function updateDosen($npk, $arr_data) {   
         $query = "UPDATE dosen SET nama = ?, foto_extension = ? WHERE npk = ?";
         $stmt = $this->mysqli->prepare($query);
         $stmt->bind_param("sss", $arr_data['nama'], $arr_data['foto_extension'], $npk);
 
         $stmt->execute();
-        
         return $stmt->affected_rows;
-
-        $stmt->close();
     }
 
     public function deleteDosen($npk) {
@@ -63,14 +52,9 @@ class Dosen extends classParent {
         $stmt = $this->mysqli->prepare($query);
         $stmt->bind_param("s", $npk);
 
-        $ok = $stmt->execute();
-        $stmt->close();
-
-        return $ok;
+        return $stmt->execute();
     }
 }
-
-
 
 if (isset($_GET['status'])) {
     if ($_GET['status'] == 'success') {
@@ -79,5 +63,4 @@ if (isset($_GET['status'])) {
         echo "<p style='color:red;'>Proses Gagal.</p>";
     }
 }
-
 ?>

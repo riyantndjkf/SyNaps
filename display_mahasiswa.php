@@ -7,7 +7,7 @@ $mahasiswas = $mhsObj->getMahasiswa();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,11 +74,11 @@ $mahasiswas = $mhsObj->getMahasiswa();
                                     }
                                     ?>
                                 </td>
-                                <td><?php echo htmlspecialchars($row['nrp']); ?></td>
-                                <td><?php echo htmlspecialchars($row['nama']); ?></td>
-                                <td><?php echo htmlspecialchars($row['gender']); ?></td>
+                                <td><?php echo $row['nrp']; ?></td>
+                                <td><?php echo $row['nama']; ?></td>
+                                <td><?php echo $row['gender']; ?></td>
                                 <td><?php echo date("d M Y", strtotime($row['tanggal_lahir'])); ?></td>
-                                <td><?php echo htmlspecialchars($row['angkatan']); ?></td>
+                                <td><?php echo $row['angkatan']; ?></td>
                                 <td>
                                     <button class="editBtn" value="<?php echo $row['nrp']; ?>">Edit</button> |
                                     <button class="hapusBtn" value="<?php echo $row['nrp']; ?>">Hapus</button>
@@ -91,7 +91,7 @@ $mahasiswas = $mhsObj->getMahasiswa();
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="jquery-3.7.1.js"></script>
     <script>
     $(function(){
     $("body").on("click", ".hapusBtn", function(){

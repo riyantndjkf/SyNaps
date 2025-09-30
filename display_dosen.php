@@ -1,14 +1,13 @@
 <?php
 require_once("dosen.php");
 
-// ambil semua dosen
 $dosenObj = new Dosen();
 $dosens = $dosenObj->getDosen();
 
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -69,8 +68,8 @@ $dosens = $dosenObj->getDosen();
                                     }
                                     ?>
                                 </td>
-                                <td><?php echo htmlspecialchars($row['npk']); ?></td>
-                                <td><?php echo htmlspecialchars($row['nama']); ?></td>
+                                <td><?php echo $row['npk']; ?></td>
+                                <td><?php echo $row['nama']; ?></td>
                                 <td>
                                     <button class="editBtn" value="<?php echo $row['npk']; ?>">Edit</button>
                                     <button class="hapusBtn" value="<?php echo $row['npk']; ?>">Hapus</button>
@@ -82,7 +81,7 @@ $dosens = $dosenObj->getDosen();
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="jquery-3.7.1.js"></script>
     <script>
     $(function(){
     $("body").on("click", ".hapusBtn", function(){

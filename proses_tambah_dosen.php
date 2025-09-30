@@ -9,9 +9,6 @@ $arr_data = array(
     'foto_extension' => null,
 );
 
-
-
-
 if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
     $target_dir = "images/";
     $foto_extension = pathinfo($_FILES["foto"]["name"], PATHINFO_EXTENSION);
@@ -22,10 +19,7 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
     }
 }
 
-
 $arr_data['foto_extension'] = $foto_extension;
-
-
 
 if ($dosenObj->insertDosen($arr_data)) {
     header("Location: display_dosen.php?status=success");

@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Mahasiswa Baru</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
@@ -14,13 +13,13 @@
         <div class="main-content">
             <div class="menu">
                 <h3>Menu</h3>
-                <a href="dosen.php">Kelola Dosen</a>
-                <a href="mahasiswa.php" class="active">Kelola Mahasiswa</a>
+                <a href="dosen.php">Kelola Dosen</a><br>
+                <a href="mahasiswa.php">Kelola Mahasiswa</a><br>
             </div>
             <div class="content">
                 <h2>Tambah Mahasiswa Baru</h2>
                 
-                <form method="post" action="proses_tambah_mahasiswa.php" enctype="multipart/form-data">
+                <form method="post" action="proses_tambah_mahasiswa.php">
                     <p>
                         <label for="nrp">NRP</label><br>
                         <input type="text" name="nrp" id="nrp" required maxlength="9">

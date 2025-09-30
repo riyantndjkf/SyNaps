@@ -19,13 +19,13 @@ $dosen = $dosenObj->getDosen($_GET['npk']);
         <div class="main-content">
             <div class="menu">
                 <h3>Menu</h3>
-                <a href="dosen.php" class="active">Kelola Dosen</a>
-                <a href="mahasiswa.php">Kelola Mahasiswa</a>
+                <a href="dosen.php">Kelola Dosen</a><br>
+                <a href="mahasiswa.php">Kelola Mahasiswa</a><br>
             </div>
             <div class="content">
                 <h2>Edit Data Dosen</h2>
 
-                <form method="post" action="proses_update_dosen.php" enctype="multipart/form-data">
+                <form method="post" action="proses_update_dosen.php">
 
                     <input type="hidden" name="npk" value="<?php echo $dosen['npk']; ?>">
                     <p>

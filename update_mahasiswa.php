@@ -1,26 +1,7 @@
 <?php
-$mysqli = new mysqli("localhost", "root", '', "fullstack");
-if ($mysqli->connect_error) {
-    echo "Koneksi Gagal: " . $mysqli->connect_error;
-}
-
-// Validasi NRP
-if (!isset($_GET['nrp'])) {
-    echo "NRP tidak ditemukan!";
-}
-$nrp = $_GET['nrp'];
-
-// Ambil data mahasiswa
-$stmt = $mysqli->prepare("SELECT * FROM mahasiswa WHERE nrp=?");
-$stmt->bind_param("s", $nrp);
-$stmt->execute();
-$result = $stmt->get_result();
-$mahasiswa = $result->fetch_assoc();
-
-if (!$mahasiswa) {
-    die("Data mahasiswa tidak ditemukan!");
-}
-$stmt->close();
+require_once("mahasiswa.php");
+$mhsObj = new Mahasiswa();
+$mahasiswa = $mhsObj->getMahasiswa($_GET['nrp']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,19 +19,19 @@ $stmt->close();
     <div class="main-content">
         <div class="menu">
             <h3>Menu</h3>
-            <a href="dosen.php">Kelola Dosen</a>
-            <a href="mahasiswa.php" class="active">Kelola Mahasiswa</a>
+            <a href="dosen.php">Kelola Dosen</a><br>
+            <a href="mahasiswa.php">Kelola Mahasiswa</a><br>
         </div>
         <div class="content">
             <h2>Edit Data Mahasiswa</h2>
 
-            <form method="post" action="proses_update_mahasiswa.php" enctype="multipart/form-data">
-                <input type="hidden" name="nrp" value="<?php echo htmlspecialchars($mahasiswa['nrp']); ?>">
+            <form method="post" action="proses_update_mahasiswa.php">
+                <input type="hidden" name="nrp" value="<?php echo $mahasiswa['nrp']; ?>">
 
                 <p>
                     <label for="nama">Nama</label><br>
                     <input type="text" name="nama" id="nama" 
-                           value="<?php echo htmlspecialchars($mahasiswa['nama']); ?>" required>
+                           value="<?php echo $mahasiswa['nama']; ?>" required>
                 </p>
                 <p>
                     <label for="gender">Gender</label><br>
@@ -67,7 +48,7 @@ $stmt->close();
                 <p>
                     <label for="angkatan">Angkatan</label><br>
                     <input type="number" name="angkatan" id="angkatan" 
-                           value="<?php echo htmlspecialchars($mahasiswa['angkatan']); ?>" required>
+                           value="<?php echo $mahasiswa['angkatan']; ?>" required>
                 </p>
                 <p>
                     <label>Foto Saat Ini</label><br>
