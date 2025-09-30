@@ -25,10 +25,13 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
     }
 }
 
-$mhsObj->insertMahasiswa($arr_data);
+;
 
-// opsional: ambil data yang baru ditambah
-$newMahasiswa = $mhsObj->getMahasiswa($nrp);
-
-echo "<script>alert('Data mahasiswa berhasil ditambahkan!'); window.location='mahasiswa.php';</script>";
+if ($mhsObj->insertMahasiswa($arr_data)) {
+    header("Location: display_mahasiswa.php?status=success");
+    exit;
+} else {
+    header("Location: display_mahasiswa.php?status=error");
+    exit;
+}
 ?>

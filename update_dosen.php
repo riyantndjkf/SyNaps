@@ -1,18 +1,8 @@
 <?php
-$mysqli = new mysqli("localhost", "root",'', "fullstack");
+require_once("dosen.php");
 
-if ($mysqli->connect_error) {
-    echo "Koneksi Gagal: " . $mysqli->connect_error;
-}
-
-$npk = $_GET['npk'];
-
-// Ambil data dosen berdasarkan NPK
-$stmt = $mysqli->prepare("SELECT * FROM dosen WHERE npk=?");
-$stmt->bind_param("s", $npk);
-$stmt->execute();
-$result = $stmt->get_result();
-$dosen = $result->fetch_assoc();
+$dosenObj = new Dosen();
+$dosen = $dosenObj->getDosen($_GET['npk']);
 
 ?>
 <!DOCTYPE html>
@@ -63,7 +53,7 @@ $dosen = $result->fetch_assoc();
                     </p>
                     <p>
                         <button type="submit" name="update">Update</button>
-                        <a href="dosen.php"><button type="button">Kembali</button></a>
+                        <a href="display_dosen.php"><button type="button">Kembali</button></a>
                     </p>
                 </form> 
             </div>

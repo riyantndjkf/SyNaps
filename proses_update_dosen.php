@@ -31,8 +31,13 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
 }
 
 // Panggil method updateDosen dari class
-$dosenObj->updateDosen($npk, $arr_data);
 
-echo "<script>alert('Data dosen berhasil diperbarui!'); window.location='dosen.php';</script>";
+if ($dosenObj->updateDosen($npk, $arr_data)) {
+    header("Location: display_dosen.php?status=success");
+    exit;
+} else {
+    header("Location: display_dosen.php?status=error");
+    exit;
+}
 
 ?>

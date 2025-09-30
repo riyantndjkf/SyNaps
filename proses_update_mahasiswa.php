@@ -35,8 +35,12 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
     $arr_data['foto_extention'] = $old_extention;
 }
 
-$mhsObj->updateMahasiswa($nrp, $arr_data);
-
-echo "<script>alert('Data mahasiswa berhasil diperbarui!'); window.location='mahasiswa.php';</script>";
+if ($mhsObj->updateMahasiswa($nrp, $arr_data)) {
+    header("Location: display_mahasiswa.php?status=success");
+    exit;
+} else {
+    header("Location: display_mahasiswa.php?status=error");
+    exit;
+}
 
 ?>

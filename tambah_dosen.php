@@ -35,7 +35,7 @@
                     </p>
                     <p>
                         <button type="submit">Simpan</button>
-                        <a href="dosen.php"><button type="button">Kembali</button></a>
+                        <a href="display_dosen.php"><button type="button">Kembali</button></a>
                     </p>
                 </form> 
             </div>

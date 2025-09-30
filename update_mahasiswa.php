@@ -91,7 +91,7 @@ $stmt->close();
 
                 <p>
                     <button type="submit" name="update">Update</button>
-                    <a href="mahasiswa.php"><button type="button">Kembali</button></a>
+                    <a href="display_mahasiswa.php"><button type="button">Kembali</button></a>
                 </p>
             </form>
         </div>

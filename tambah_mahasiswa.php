@@ -48,7 +48,7 @@
                     </p>
                     <p>
                         <button type="submit">Simpan</button>
-                        <a href="mahasiswa.php"><button type="button">Kembali</button></a>
+                        <a href="display.php"><button type="button">Kembali</button></a>
                     </p>
                 </form> 
             </div>
