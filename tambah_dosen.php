@@ -31,7 +31,7 @@
                     </p>
                     <p>
                         <label for="foto">Foto</label><br>
-                        <input type="file" name="foto" id="foto" accept="image/jpeg, image/png, image/gif">
+                        <input type="file" name="foto" id="foto" accept="image/jpeg, image/png, image/jpg">
                     </p>
                     <p>
                         <button type="submit">Simpan</button>

@@ -50,16 +50,16 @@ $dosen = $result->fetch_assoc();
                             if (file_exists($path)) {
                                 echo "<img src='$path' width='120'><br>";
                             } else {
-                                echo "File tidak ditemukan<br>";
+                                echo "File not found<br>";
                             }
                         } else {
-                            echo "Tidak ada foto<br>";
+                            echo "No Image<br>";
                         }
                         ?>
                     </p>
                     <p>
                         <label for="foto">Ganti Foto</label><br>
-                        <input type="file" name="foto" id="foto" accept="image/jpeg, image/png, image/gif">
+                        <input type="file" name="foto" id="foto" accept="image/jpeg, image/png, image/jpg">
                     </p>
                     <p>
                         <button type="submit" name="update">Update</button>

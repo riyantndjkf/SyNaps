@@ -1,14 +1,15 @@
 <?php
-$mysqli = new mysqli("localhost", "root",'', "fullstack");
+require_once("dosen.php");
 
-if ($mysqli->connect_error) {
-    echo "Koneksi Gagal: " . $mysqli->connect_error;
-}
+$dosenObj = new Dosen();
+$npk = $_POST['npk']; //ini biar bisa dipakai di upload
+$arr_data = array(
+    'npk' => $npk,
+    'nama' => $_POST['nama'],
+    'foto_extension' => null,
+);
 
-// Ambil data dari form
-$npk = $_POST['npk'];
-$nama = $_POST['nama'];
-$foto_extension = null;
+
 
 // Proses upload foto
 if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
@@ -16,24 +17,16 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
     $foto_extension = pathinfo($_FILES["foto"]["name"], PATHINFO_EXTENSION);
     $target_file = $target_dir . $npk . '.' . $foto_extension;
 
-    // Pindahkan file yang di-upload ke folder tujuan
-    if (!move_uploaded_file($_FILES["foto"]["tmp_name"], $target_file)) {
-        echo "<script>alert('Maaf, terjadi error saat mengupload file.'); window.location='tambah_dosen.php';</script>";
-        exit();
+    if (move_uploaded_file($_FILES["foto"]["tmp_name"], $target_file)) {
+        $arr_data['foto_extension'] = $foto_extension;
     }
 }
 
-// Siapkan dan eksekusi query SQL
-$query = "INSERT INTO dosen (npk, nama, foto_extension) VALUES (?, ?, ?)";
-$stmt = $mysqli->prepare($query);
-$stmt->bind_param("sss", $npk, $nama, $foto_extension);
+// update extension ke array data
+$arr_data['foto_extension'] = $foto_extension;
 
-if ($stmt->execute()) {
-    echo "<script>alert('Data dosen berhasil ditambahkan!'); window.location='dosen.php';</script>";
-} else {
-    echo "<script>alert('Gagal menambahkan data: " . $stmt->error . "'); window.location='tambah_dosen.php';</script>";
-}
+// Panggil method insertDosen dari class
+$dosenObj->insertDosen($arr_data);
 
-$stmt->close();
-$mysqli->close();
+echo "<script>alert('Data dosen berhasil ditambahkan!'); window.location='dosen.php';</script>";
 ?>

@@ -55,8 +55,8 @@ $stmt->close();
                 <p>
                     <label for="gender">Gender</label><br>
                     <select name="gender" id="gender" required>
-                        <option value="L" <?php if ($mahasiswa['gender']=='L') echo 'selected'; ?>>Laki-Laki</option>
-                        <option value="P" <?php if ($mahasiswa['gender']=='P') echo 'selected'; ?>>Perempuan</option>
+                        <option value="Pria" <?php if ($mahasiswa['gender']=='Pria') echo 'selected'; ?>>Pria</option>
+                        <option value="Wanita" <?php if ($mahasiswa['gender']=='Wanita') echo 'selected'; ?>>Wanita</option>
                     </select>
                 </p>
                 <p>
@@ -72,12 +72,12 @@ $stmt->close();
                 <p>
                     <label>Foto Saat Ini</label><br>
                     <?php
-                    if (!empty($mahasiswa['foto_extension'])) {
-                        $path = "uploads/" . $mahasiswa['nrp'] . "." . $mahasiswa['foto_extension'];
+                    if (!empty($mahasiswa['foto_extention'])) {
+                        $path = "images/" . $mahasiswa['nrp'] . "." . $mahasiswa['foto_extention'];
                         if (file_exists($path)) {
                             echo "<img src='$path' width='120'><br>";
                         } else {
-                            echo "No File<br>";
+                            echo "File not found<br>";
                         }
                     } else {
                         echo "No Image<br>";
