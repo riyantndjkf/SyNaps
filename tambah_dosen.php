@@ -19,7 +19,7 @@
             <div class="content">
                 <h2>Tambah Dosen Baru</h2>
                 
-                <form method="post" action="proses_tambah_dosen.php">
+                <form method="post" action="proses_tambah_dosen.php"  enctype="multipart/form-data">
                     <p>
                         <label for="npk">NPK</label><br>
                         <input type="text" name="npk" id="npk" required maxlength="6">

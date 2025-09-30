@@ -25,7 +25,7 @@ $mahasiswa = $mhsObj->getMahasiswa($_GET['nrp']);
         <div class="content">
             <h2>Edit Data Mahasiswa</h2>
 
-            <form method="post" action="proses_update_mahasiswa.php">
+            <form method="post" action="proses_update_mahasiswa.php" enctype="multipart/form-data">
                 <input type="hidden" name="nrp" value="<?php echo $mahasiswa['nrp']; ?>">
 
                 <p>

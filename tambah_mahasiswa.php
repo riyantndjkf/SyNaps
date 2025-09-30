@@ -19,7 +19,7 @@
             <div class="content">
                 <h2>Tambah Mahasiswa Baru</h2>
                 
-                <form method="post" action="proses_tambah_mahasiswa.php">
+                <form method="post" action="proses_tambah_mahasiswa.php"  enctype="multipart/form-data">
                     <p>
                         <label for="nrp">NRP</label><br>
                         <input type="text" name="nrp" id="nrp" required maxlength="9">

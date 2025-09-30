@@ -25,7 +25,7 @@ $dosen = $dosenObj->getDosen($_GET['npk']);
             <div class="content">
                 <h2>Edit Data Dosen</h2>
 
-                <form method="post" action="proses_update_dosen.php">
+                <form method="post" action="proses_update_dosen.php" enctype="multipart/form-data">
 
                     <input type="hidden" name="npk" value="<?php echo $dosen['npk']; ?>">
                     <p>
