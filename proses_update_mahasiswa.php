@@ -1,5 +1,6 @@
 <?php
-require_once("mahasiswa.php");
+require_once("security.php");
+require_once("class/mahasiswa.php");
 
 $mhsObj = new Mahasiswa();
 

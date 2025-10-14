@@ -1,5 +1,6 @@
 <?php
-require_once("dosen.php");
+require_once("security.php");
+require_once("class/dosen.php");
 
 $dosenObj = new Dosen();
 $npk = $_POST['npk']; 

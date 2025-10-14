@@ -1,5 +1,5 @@
 <?php
-require_once("mahasiswa.php");
+require_once("class/mahasiswa.php");
 
 if (isset($_GET["nrp"])) {
     $nrp = $_GET["nrp"];
