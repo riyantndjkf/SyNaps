@@ -10,9 +10,11 @@ if (!isset($_SESSION['username'])) {
     $uri = $_SERVER['REQUEST_URI'];
     $url = "http://" . $domain . $uri;
 
-    // Arahkan ke halaman login sambil membawa URL tujuan
-    header("Location: login.php?url=" . urlencode($url));
-    exit();
+    $_SESSION['last_page'] = $url;
+
+    // Redirect ke login
+    header("Location: login.php");
+    exit;
 }
 
 // --- Pengaman tambahan: cek IP dan User-Agent ---

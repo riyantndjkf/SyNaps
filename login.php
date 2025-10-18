@@ -1,6 +1,4 @@
 <?php
-require_once("security.php");
-
 if (isset($_GET['logout']) && $_GET['logout'] == 'success') {
     echo "<p style='color:green; text-align:center;'>Anda telah berhasil logout.</p>";
 }

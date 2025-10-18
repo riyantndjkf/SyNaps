@@ -1,5 +1,5 @@
 <?php
-require_once("security.php");
+session_start();
 require_once("class/akun.php");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -22,10 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['nrp_mahasiswa'] = $row['nrp_mahasiswa'];
         $_SESSION['npk_dosen'] = $row['npk_dosen'];
 
-        // Redirect ke halaman awal atau halaman yang diminta
-        $url = isset($_POST['url']) ? $_POST['url'] : 'index.php';
-        header("Location: " . $url);
+        // Cek apakah ada halaman terakhir tersimpan
+        if (isset($_SESSION['last_page'])) {
+            $redirect_url = $_SESSION['last_page'];
+            unset($_SESSION['last_page']); // hapus biar tidak nyangkut
+        } else {
+            $redirect_url = 'index.php';
+        }
 
+        header("Location: " . $redirect_url);
         exit;
     } else {
         echo "<script>alert('Username atau password salah!'); window.location='login.php';</script>";
