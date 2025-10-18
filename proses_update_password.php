@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once("security.php");
 require_once("class/akun.php");
 
 if (!isset($_SESSION['username'])) {

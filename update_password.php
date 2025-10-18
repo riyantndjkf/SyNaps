@@ -1,11 +1,5 @@
 <?php
-session_start();
-
-if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
-    exit;
-}
-
+require_once("security.php");
 require_once("class/akun.php");
 $akun = new Akun();
 

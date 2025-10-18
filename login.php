@@ -1,10 +1,5 @@
 <?php
-session_start();
-
-if (isset($_SESSION['username'])) {
-    header("Location: index.php");
-    exit;
-}
+require_once("security.php");
 
 if (isset($_GET['logout']) && $_GET['logout'] == 'success') {
     echo "<p style='color:green; text-align:center;'>Anda telah berhasil logout.</p>";
@@ -28,13 +23,17 @@ if (isset($_GET['logout']) && $_GET['logout'] == 'success') {
     if (isset($_GET['reg']) && $_GET['reg'] == 'success') {
         echo "<p style='color:green;'>Registrasi berhasil! Silakan login.</p>";
     }
+
+    $url = isset($_GET['url']) ? $_GET['url'] : 'index.php';
     ?>
 
-    <form method="post" action="proses_login.php">
-        <p><label>Username</label> <input type="text" name="username" required></p>
-        <p><label>Password</label> <input type="password" name="password" required></p>
-        <p><button type="submit">Login</button></p>
-    </form>
+<form method="post" action="proses_login.php">
+    <input type="hidden" name="url" value="<?= htmlspecialchars($url) ?>">
+    <p><label>Username</label> <input type="text" name="username" required></p>
+    <p><label>Password</label> <input type="password" name="password" required></p>
+    <p><button type="submit">Login</button></p>
+</form>
+
 
     <p>Belum punya akun? <a href="registrasi.php">Daftar di sini</a></p>
 </body>

@@ -1,4 +1,5 @@
 <?php
+require_once("security.php");
 require_once("class/akun.php");
 
 $akun = new Akun();
