@@ -56,11 +56,4 @@ class Dosen extends classParent {
     }
 }
 
-if (isset($_GET['status'])) {
-    if ($_GET['status'] == 'success') {
-        echo "<p style='color:green;'>Proses Berhasil!</p>";
-    } elseif ($_GET['status'] == 'error') {
-        echo "<p style='color:red;'>Proses Gagal.</p>";
-    }
-}
 ?>

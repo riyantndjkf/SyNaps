@@ -13,6 +13,15 @@ $arr_data = array(
     'foto_extention' => null,
 );
 
+// === CEK APAKAH NRP SUDAH ADA ===
+$cek = $mhsObj->getMahasiswa($nrp);
+if ($cek) {
+    // Redirect pakai GET status, tanpa JavaScript
+    header("Location: display_mahasiswa.php?status=duplicate");
+    exit;
+}
+
+
 if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
     $target_dir = "images/";
     $foto_extention = pathinfo($_FILES["foto"]["name"], PATHINFO_EXTENSION);

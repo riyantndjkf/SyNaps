@@ -43,6 +43,18 @@ $dosens = $dosenObj->getDosen();
             </div>
             <div class="content">
                 <h2>Daftar Dosen</h2>
+                <!--  Bagian Status -->
+                <?php
+                if (isset($_GET['status'])) {
+                    if ($_GET['status'] == 'success') {
+                        echo "<p style='color: green; text-align:center;'>Proses Berhasil!</p>";
+                    } elseif ($_GET['status'] == 'error') {
+                        echo "<p style='color: red; text-align:center;'>Proses Gagal!</p>";
+                    } elseif ($_GET['status'] == 'duplicate') {
+                        echo "<p style='color: orange; text-align:center;'>NPK sudah terdaftar, tidak bisa ditambahkan!</p>";
+                    }
+                }
+                ?>
                 <button onclick="location.href='tambah_dosen.php'">Tambah Dosen Baru</button>
                 <br><br>
                 <table>

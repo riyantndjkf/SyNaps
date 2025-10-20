@@ -60,12 +60,5 @@ class Mahasiswa extends classParent {
 $mhsObj = new Mahasiswa();
 $mahasiswas = $mhsObj->getMahasiswa();
 
-if (isset($_GET['status'])) {
-    if ($_GET['status'] == 'success') {
-        echo "<p style='color:green;'>Proses berhasil!</p>";
-    } elseif ($_GET['status'] == 'error') {
-        echo "<p style='color:red;'>Proses Gagal.</p>";
-    }
-}
 ?>
 
