@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 24, 2025 at 05:56 PM
+-- Generation Time: Oct 21, 2025 at 12:40 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -35,6 +35,18 @@ CREATE TABLE `akun` (
   `isadmin` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `akun`
+--
+
+INSERT INTO `akun` (`username`, `password`, `nrp_mahasiswa`, `npk_dosen`, `isadmin`) VALUES
+('160423014', '$2y$10$DLGTh8IqUIijXeByyZi9lOeIjbqdY6VUKXOcyweo8owiS4LIVZAxu', '160423014', NULL, 0),
+('160423099', '$2y$10$GBFFNVWeTRF8uKzH/Fwmtu6pKzPo6NoYe2MW3tibmgOxYn9S38ioC', '160423099', NULL, 0),
+('160423125', '$2y$10$EBrcwjK4z5yxn8ciygS/.O9bhpIpDIqJkt7tw16lWANpRO7DptPlK', '160423125', NULL, 0),
+('210134', '$2y$10$tBAKcOB/yt9c0f8rkV/Qk.FrokAgjqYEzh50khfz43Y/KR.riDU4K', NULL, '210134', 0),
+('218122', '$2y$10$rUZ8IWFNh2lWdPNEM3Aot.CxDAmmXZw7SErY5qRWrUvoIQA8fjx3a', NULL, '218122', 0),
+('admin', '$2y$10$hvTzTY6gjHE8YasDRCS7DuxdPxKc3vuALjbjSAZImPQdB2TkiYv4a', NULL, NULL, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -60,6 +72,14 @@ CREATE TABLE `dosen` (
   `nama` varchar(45) DEFAULT NULL,
   `foto_extension` varchar(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `dosen`
+--
+
+INSERT INTO `dosen` (`npk`, `nama`, `foto_extension`) VALUES
+('210134', 'Tyrza Adelia, M.Inf.Tech.', 'jpg'),
+('218122', 'Mikhael Ming Khosasih, M.M., M.Kom.', 'jpg');
 
 -- --------------------------------------------------------
 
@@ -108,6 +128,15 @@ CREATE TABLE `mahasiswa` (
   `angkatan` year(4) DEFAULT NULL,
   `foto_extention` varchar(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `mahasiswa`
+--
+
+INSERT INTO `mahasiswa` (`nrp`, `nama`, `gender`, `tanggal_lahir`, `angkatan`, `foto_extention`) VALUES
+('160423014', 'Kevin Margason Winata', 'Pria', '2005-03-08', '2023', 'jpg'),
+('160423099', 'Agnesha Riby Tjoanda', 'Wanita', '2005-03-08', '2023', 'jpg'),
+('160423125', 'Ariyanto Chandra', 'Pria', '2006-04-10', '2023', 'jpg');
 
 -- --------------------------------------------------------
 
