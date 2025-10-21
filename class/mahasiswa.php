@@ -44,8 +44,7 @@ class Mahasiswa extends classParent {
         $stmt = $this->mysqli->prepare($query);
         $stmt->bind_param("sssiss", $arr_data['nama'], $arr_data['gender'], $arr_data['tanggal_lahir'], $arr_data['angkatan'], $arr_data['foto_extention'], $nrp);
 
-        $stmt->execute();
-        return $stmt->affected_rows;
+        return $stmt->execute();
     }
 
     public function deleteMahasiswa($nrp) {

@@ -32,6 +32,14 @@ require_once("security.php");
                         <input type="text" name="nama" id="nama" required>
                     </p>
                     <p>
+                        <label for="username">Username</label><br>
+                        <input type="text" name="username" id="username" required>
+                    </p>
+                    <p>
+                        <label for="password">Password</label><br>
+                        <input type="text" name="password" id="password" required>
+                    </p>
+                    <p>
                         <label for="foto">Foto</label><br>
                         <input type="file" name="foto" id="foto" accept="image/jpeg, image/png, image/jpg">
                     </p>

@@ -7,6 +7,15 @@ $dosenObj = new Dosen();
 $akunObj = new Akun();
 
 $npk = $_POST['npk']; 
+$password = $_POST['password'];
+
+$arr_akun = array(
+'username' => $_POST['username'],
+'password_hash' => password_hash($password, PASSWORD_DEFAULT),
+'npk' => $npk,
+'isadmin' => 0,
+);
+
 $arr_data = array(
     'npk' => $npk,
     'nama' => $_POST['nama'],
@@ -31,15 +40,7 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
     }
 }
 
-
-if ($dosenObj->insertDosen($arr_data)) {
-    $username = $npk;
-    $password_hash = password_hash($npk, PASSWORD_DEFAULT);
-    $npk_dosen = $npk;
-    $isadm = 0;
-
-    $akunObj->insertAkunDosen($username, $password_hash, $npk_dosen, $isadmin);
-
+if ($dosenObj->insertDosen($arr_data) && $akunObj->insertAkunDosen($arr_akun)) {
     header("Location: display_dosen.php?status=success");
     exit;
 } else {

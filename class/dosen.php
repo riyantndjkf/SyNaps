@@ -43,8 +43,7 @@ class Dosen extends classParent {
         $stmt = $this->mysqli->prepare($query);
         $stmt->bind_param("sss", $arr_data['nama'], $arr_data['foto_extension'], $npk);
 
-        $stmt->execute();
-        return $stmt->affected_rows;
+        return $stmt->execute();
     }
 
     public function deleteDosen($npk) {

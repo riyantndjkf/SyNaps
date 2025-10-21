@@ -21,7 +21,7 @@ class Akun extends classParent
         $stmt->close();
         return $row ?: false;
     }
-    // Login akun
+
     public function login($username, $password)
     {
         $stmt = $this->mysqli->prepare("SELECT * FROM akun WHERE username = ?");
@@ -38,19 +38,17 @@ class Akun extends classParent
         return false;
     }
 
-    // Insert akun untuk dosen
-    public function insertAkunDosen($username, $password, $npk_dosen, $isadmin = 0)
+    public function insertAkunDosen($arr_akun)
     {
         $stmt = $this->mysqli->prepare("INSERT INTO akun (username, password, npk_dosen, isadmin) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("sssi", $username, $password, $npk_dosen, $isadmin);
+        $stmt->bind_param("sssi", $arr_akun['username'], $arr_akun['password_hash'], $arr_akun['npk'], $arr_akun['isadmin']);
         return $stmt->execute();
     }
 
-    // Insert akun untuk mahasiswa
-    public function insertAkunMahasiswa($username, $password, $nrp_mahasiswa, $isadmin = 0)
+    public function insertAkunMahasiswa($arr_akun)
     {
         $stmt = $this->mysqli->prepare("INSERT INTO akun (username, password, nrp_mahasiswa, isadmin) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("sssi", $username, $password, $nrp_mahasiswa, $isadmin);
+        $stmt->bind_param("sssi", $arr_akun['username'], $arr_akun['password_hash'], $arr_akun['nrp'], $arr_akun['isadmin']);
         return $stmt->execute();
     }
 
@@ -68,9 +66,6 @@ class Akun extends classParent
         return $stmt->execute();
     }
 
-
-
-    // Update password
     public function updatePassword($username, $new_plain_pwd) 
     {   
         $hash = password_hash($new_plain_pwd, PASSWORD_DEFAULT);

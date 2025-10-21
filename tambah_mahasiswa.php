@@ -32,6 +32,14 @@ require_once("security.php");
                         <input type="text" name="nama" id="nama" required>
                     </p>
                     <p>
+                        <label for="username">Username</label><br>
+                        <input type="text" name="username" id="username" required>
+                    </p>
+                    <p>
+                        <label for="password">Password</label><br>
+                        <input type="text" name="password" id="password" required>
+                    </p>
+                    <p>
                         <label>Gender</label><br>
                         <input type="radio" name="gender" value="Pria" id="pria" required> <label for="pria">Pria</label>
                         <input type="radio" name="gender" value="Wanita" id="wanita"> <label for="wanita">Wanita</label>

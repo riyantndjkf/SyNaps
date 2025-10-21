@@ -7,6 +7,15 @@ $mhsObj = new Mahasiswa();
 $akunObj = new Akun();
 
 $nrp = $_POST['nrp']; 
+$password = $_POST['password'];
+
+$arr_akun = array(
+'username' => $_POST['username'],
+'password_hash' => password_hash($password, PASSWORD_DEFAULT),
+'nrp' => $nrp,
+'isadmin' => 0,
+);
+
 $arr_data = array(
     'nrp' => $nrp,
     'nama' => $_POST['nama'],
@@ -35,19 +44,7 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
     }
 };
 
-if ($mhsObj->insertMahasiswa($arr_data)) {
-
-     // === BUATKAN AKUN UNTUK MAHASISWA ===
-    // Username default = NRP
-    // Password default = NRP (bisa diubah nanti di halaman profil)
-    $username = $nrp;
-    $password_hash = password_hash($nrp, PASSWORD_DEFAULT);
-    $nrp_mahasiswa = $nrp;
-    $isadm = 0;
-
-    // Insert ke tabel akun
-    $akunObj->insertAkunMahasiswa($username, $password_hash, $nrp_mahasiswa, $isadmin);
-
+if ($mhsObj->insertMahasiswa($arr_data) && $akunObj->insertAkunMahasiswa($arr_akun)) {
     header("Location: display_mahasiswa.php?status=success");
     exit;
 } else {
