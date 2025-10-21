@@ -1,8 +1,11 @@
 <?php
 require_once("security.php");
 require_once("class/dosen.php");
+require_once("class/akun.php");
 
 $dosenObj = new Dosen();
+$akunObj = new Akun();
+
 $npk = $_POST['npk']; 
 $arr_data = array(
     'npk' => $npk,
@@ -28,9 +31,15 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
     }
 }
 
-$arr_data['foto_extension'] = $foto_extension;
 
 if ($dosenObj->insertDosen($arr_data)) {
+    $username = $npk;
+    $password_hash = password_hash($npk, PASSWORD_DEFAULT);
+    $npk_dosen = $npk;
+    $isadm = 0;
+
+    $akunObj->insertAkunDosen($username, $password_hash, $npk_dosen, $isadmin);
+
     header("Location: display_dosen.php?status=success");
     exit;
 } else {

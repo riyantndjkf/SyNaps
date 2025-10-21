@@ -20,8 +20,8 @@ $mahasiswa = $mhsObj->getMahasiswa($_GET['nrp']);
     <div class="main-content">
         <div class="menu">
             <h3>Menu</h3>
-            <a href="dosen.php">Kelola Dosen</a><br>
-            <a href="mahasiswa.php">Kelola Mahasiswa</a><br>
+            <a href="display_dosen.php">Kelola Dosen</a><br>
+            <a href="display_mahasiswa.php">Kelola Mahasiswa</a><br>
         </div>
         <div class="content">
             <h2>Edit Data Mahasiswa</h2>

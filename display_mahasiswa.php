@@ -121,5 +121,6 @@ $mahasiswas = $mhsObj->getMahasiswa();
     });
 });
     </script>
+    <a href="index.php"><button type="button">Kembali</button></a>
 </body>
 </html>

@@ -1,8 +1,11 @@
 <?php
 require_once("security.php");
 require_once("class/mahasiswa.php");
+require_once("class/akun.php");
 
 $mhsObj = new Mahasiswa();
+$akunObj = new Akun();
+
 $nrp = $_POST['nrp']; 
 $arr_data = array(
     'nrp' => $nrp,
@@ -33,6 +36,18 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
 };
 
 if ($mhsObj->insertMahasiswa($arr_data)) {
+
+     // === BUATKAN AKUN UNTUK MAHASISWA ===
+    // Username default = NRP
+    // Password default = NRP (bisa diubah nanti di halaman profil)
+    $username = $nrp;
+    $password_hash = password_hash($nrp, PASSWORD_DEFAULT);
+    $nrp_mahasiswa = $nrp;
+    $isadm = 0;
+
+    // Insert ke tabel akun
+    $akunObj->insertAkunMahasiswa($username, $password_hash, $nrp_mahasiswa, $isadmin);
+
     header("Location: display_mahasiswa.php?status=success");
     exit;
 } else {

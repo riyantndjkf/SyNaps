@@ -110,5 +110,6 @@ $dosens = $dosenObj->getDosen();
     });
 });
     </script>
+    <a href="index.php"><button type="button">Kembali</button></a>
 </body>
 </html>

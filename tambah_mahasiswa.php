@@ -50,7 +50,7 @@ require_once("security.php");
                     </p>
                     <p>
                         <button type="submit">Simpan</button>
-                        <a href="display.php"><button type="button">Kembali</button></a>
+                        <a href="display_mahasiswa.php"><button type="button">Kembali</button></a>
                     </p>
                 </form> 
             </div>

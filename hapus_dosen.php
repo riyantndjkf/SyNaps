@@ -1,9 +1,11 @@
 <?php
 require_once("class/dosen.php"); 
+require_once("class/akun.php");
 
 if (isset($_GET["npk"])) {
     $npk = $_GET["npk"];
     $dosenObj = new Dosen();
+    $akunObj = new Akun();
 
     $dosen = $dosenObj->getDosen($npk);
 
@@ -14,7 +16,7 @@ if (isset($_GET["npk"])) {
         }
     }
 
-    if ($dosenObj->deleteDosen($npk)) {
+    if ($dosenObj->deleteDosen($npk) && $akunObj->deleteAkunDosen($npk)) {
     header("Location: display_dosen.php?status=success");
     exit;
 } else {

@@ -31,8 +31,5 @@ if (isset($_GET['logout']) && $_GET['logout'] == 'success') {
     <p><label>Password</label> <input type="password" name="password" required></p>
     <p><button type="submit">Login</button></p>
 </form>
-
-
-    <p>Belum punya akun? <a href="registrasi.php">Daftar di sini</a></p>
 </body>
 </html>
