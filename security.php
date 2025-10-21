@@ -3,39 +3,32 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// --- Cek login ---
 if (!isset($_SESSION['username'])) {
-    // Ambil URL lengkap dari halaman yang sedang dibuka
     $domain = $_SERVER['HTTP_HOST'];
     $uri = $_SERVER['REQUEST_URI'];
     $url = "http://" . $domain . $uri;
 
     $_SESSION['last_page'] = $url;
 
-    // Redirect ke login
     header("Location: login.php");
     exit;
 }
 
-// --- Pengaman tambahan: cek IP dan User-Agent ---
-if (!isset($_SESSION['ip'])) {
-    $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
-}
-if (!isset($_SESSION['agent'])) {
-    $_SESSION['agent'] = $_SERVER['HTTP_USER_AGENT'];
+function sanitize($data) {
+    if (is_array($data)) {
+        return array_map('sanitize', $data);
+    }
+
+    return htmlentities($data);
 }
 
-// Jika data sesi tidak cocok (kemungkinan sesi dicuri), logout otomatis
-if ($_SESSION['ip'] !== $_SERVER['REMOTE_ADDR'] || $_SESSION['agent'] !== $_SERVER['HTTP_USER_AGENT']) {
-    session_unset();
-    session_destroy();
+$_GET     = sanitize($_GET);
+$_POST    = sanitize($_POST);
+$_REQUEST = sanitize($_REQUEST);
 
-    // Simpan juga URL terakhir sebelum logout
-    $domain = $_SERVER['HTTP_HOST'];
-    $uri = $_SERVER['REQUEST_URI'];
-    $url = "http://" . $domain . $uri;
 
-    header("Location: login.php?url=" . urlencode($url));
-    exit();
+function validateNumber($value) {
+    return is_numeric($value);
 }
+
 ?>

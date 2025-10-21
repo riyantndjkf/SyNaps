@@ -8,7 +8,19 @@ class Akun extends classParent
         parent::__construct();
     }
 
+    public function getAkun($username)
+    {
+        $sql = "SELECT * FROM akun WHERE username = ?";
+        $stmt = $this->mysqli->prepare($sql); // ✅ gunakan $this->mysqli, bukan $this->conn
+        if (!$stmt) return false;
 
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $row = $res->fetch_assoc();
+        $stmt->close();
+        return $row ?: false;
+    }
     // Login akun
     public function login($username, $password)
     {

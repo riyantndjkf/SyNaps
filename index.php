@@ -40,7 +40,7 @@ require_once("security.php");
                      
                     <a href="display_dosen.php">Kelola Dosen</a><br>
                     <a href="display_mahasiswa.php">Kelola Mahasiswa</a><br>
-                    <a href="change_password.php">Change Password</a><br>
+                    <a href="update_password.php">Change Password</a><br>
                     <a href="logout.php">Logout</a><br>
 
                 <?php } else { ?>
