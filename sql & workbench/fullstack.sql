@@ -45,7 +45,7 @@ INSERT INTO `akun` (`username`, `password`, `nrp_mahasiswa`, `npk_dosen`, `isadm
 ('160423125', '$2y$10$EBrcwjK4z5yxn8ciygS/.O9bhpIpDIqJkt7tw16lWANpRO7DptPlK', '160423125', NULL, 0),
 ('210134', '$2y$10$tBAKcOB/yt9c0f8rkV/Qk.FrokAgjqYEzh50khfz43Y/KR.riDU4K', NULL, '210134', 0),
 ('218122', '$2y$10$rUZ8IWFNh2lWdPNEM3Aot.CxDAmmXZw7SErY5qRWrUvoIQA8fjx3a', NULL, '218122', 0),
-('admin', '$2y$10$hvTzTY6gjHE8YasDRCS7DuxdPxKc3vuALjbjSAZImPQdB2TkiYv4a', NULL, NULL, 1);
+('admin', '$2y$10$zk2pN5CxpmuvRvBZpKdU3O77bP3Tn3lfgn6v.eIH4IVNweAUnSkSC', NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
