@@ -22,14 +22,12 @@ $arr_data = array(
     'foto_extension' => null,
 );
 
-// === CEK APAKAH NPK SUDAH ADA ===
 $cek = $dosenObj->getDosen($npk);
+
 if ($cek) {
-    // Redirect pakai GET status, tanpa JavaScript
     header("Location: display_dosen.php?status=duplicate");
     exit;
 }
-
 if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
     $target_dir = "images/";
     $foto_extension = pathinfo($_FILES["foto"]["name"], PATHINFO_EXTENSION);

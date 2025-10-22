@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 21, 2025 at 12:40 PM
+-- Generation Time: Oct 22, 2025 at 12:47 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,12 +40,15 @@ CREATE TABLE `akun` (
 --
 
 INSERT INTO `akun` (`username`, `password`, `nrp_mahasiswa`, `npk_dosen`, `isadmin`) VALUES
-('160423014', '$2y$10$DLGTh8IqUIijXeByyZi9lOeIjbqdY6VUKXOcyweo8owiS4LIVZAxu', '160423014', NULL, 0),
-('160423099', '$2y$10$GBFFNVWeTRF8uKzH/Fwmtu6pKzPo6NoYe2MW3tibmgOxYn9S38ioC', '160423099', NULL, 0),
-('160423125', '$2y$10$EBrcwjK4z5yxn8ciygS/.O9bhpIpDIqJkt7tw16lWANpRO7DptPlK', '160423125', NULL, 0),
-('210134', '$2y$10$tBAKcOB/yt9c0f8rkV/Qk.FrokAgjqYEzh50khfz43Y/KR.riDU4K', NULL, '210134', 0),
-('218122', '$2y$10$rUZ8IWFNh2lWdPNEM3Aot.CxDAmmXZw7SErY5qRWrUvoIQA8fjx3a', NULL, '218122', 0),
-('admin', '$2y$10$zk2pN5CxpmuvRvBZpKdU3O77bP3Tn3lfgn6v.eIH4IVNweAUnSkSC', NULL, NULL, 1);
+('admin', '$2y$10$zk2pN5CxpmuvRvBZpKdU3O77bP3Tn3lfgn6v.eIH4IVNweAUnSkSC', NULL, NULL, 1),
+('fikri', '$2y$10$.v.XpOunlExjcALoIH6icOeR/1JrIL712nsx/RQKDfXeRBlZWm6NS', NULL, '222131', 0),
+('heru', '$2y$10$u/TN2TxiHkKXy8b7AhaJL.7I6lGP4z4xZ/YJsvvVi52LVMVuZfsR2', NULL, '192014', 0),
+('ming', '$2y$10$rUZ8IWFNh2lWdPNEM3Aot.CxDAmmXZw7SErY5qRWrUvoIQA8fjx3a', NULL, '218122', 0),
+('s160423014', '$2y$10$DLGTh8IqUIijXeByyZi9lOeIjbqdY6VUKXOcyweo8owiS4LIVZAxu', '160423014', NULL, 0),
+('s160423099', '$2y$10$GBFFNVWeTRF8uKzH/Fwmtu6pKzPo6NoYe2MW3tibmgOxYn9S38ioC', '160423099', NULL, 0),
+('s160423125', '$2y$10$EBrcwjK4z5yxn8ciygS/.O9bhpIpDIqJkt7tw16lWANpRO7DptPlK', '160423125', NULL, 0),
+('s160423135', '$2y$10$9AF0ugBOaEgjsc3KMmeh..LJzvWVGnCFrQWXmcjJ9jz6b3mH5I77e', '160423135', NULL, 0),
+('tyrza', '$2y$10$tBAKcOB/yt9c0f8rkV/Qk.FrokAgjqYEzh50khfz43Y/KR.riDU4K', NULL, '210134', 0);
 
 -- --------------------------------------------------------
 
@@ -78,8 +81,10 @@ CREATE TABLE `dosen` (
 --
 
 INSERT INTO `dosen` (`npk`, `nama`, `foto_extension`) VALUES
+('192014', 'Heru Arwoko, M.T.', 'jpg'),
 ('210134', 'Tyrza Adelia, M.Inf.Tech.', 'jpg'),
-('218122', 'Mikhael Ming Khosasih, M.M., M.Kom.', 'jpg');
+('218122', 'Mikhael Ming Khosasih, M.M., M.Kom.', 'jpg'),
+('222131', 'Fikri Baharuddin, M.Kom.', 'jpg');
 
 -- --------------------------------------------------------
 
@@ -136,7 +141,8 @@ CREATE TABLE `mahasiswa` (
 INSERT INTO `mahasiswa` (`nrp`, `nama`, `gender`, `tanggal_lahir`, `angkatan`, `foto_extention`) VALUES
 ('160423014', 'Kevin Margason Winata', 'Pria', '2005-03-08', '2023', 'jpg'),
 ('160423099', 'Agnesha Riby Tjoanda', 'Wanita', '2005-03-08', '2023', 'jpg'),
-('160423125', 'Ariyanto Chandra', 'Pria', '2006-04-10', '2023', 'jpg');
+('160423125', 'Ariyanto Chandra', 'Pria', '2006-04-10', '2023', 'jpg'),
+('160423135', 'Hon Felix Edward', 'Pria', '2025-10-01', '2023', 'jpg');
 
 -- --------------------------------------------------------
 

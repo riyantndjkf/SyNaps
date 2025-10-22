@@ -18,7 +18,6 @@ require_once("security.php");
         <div class="main-content">
             <h2>Selamat Datang,
                 <?php 
-                    // Tampilkan nama user berdasarkan login
                     if (!empty($_SESSION['nrp_mahasiswa'])) {
                         echo "Mahasiswa " . htmlspecialchars($_SESSION['username']) . "</h2>";
                         echo "<p>Gunakan menu di dibawah untuk mengganti password Anda atau logout dari sistem.</p>";
@@ -30,7 +29,6 @@ require_once("security.php");
                         echo "<p>Silakan pilih menu di bawah untuk mengelola data dosen atau mahasiswa.</p>";
                     }
                 ?>
-            
             
             <div class="menu">
                 <h3>Menu</h3>

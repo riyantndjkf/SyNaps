@@ -30,5 +30,4 @@ $_REQUEST = sanitize($_REQUEST);
 function validateNumber($value) {
     return is_numeric($value);
 }
-
 ?>

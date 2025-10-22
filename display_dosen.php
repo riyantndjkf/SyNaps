@@ -1,6 +1,6 @@
 <?php
-require_once("security.php");
-require_once("class/dosen.php");
+require_once("security.php"); 
+require_once("class/dosen.php"); 
 
 $dosenObj = new Dosen();
 $dosens = $dosenObj->getDosen();
@@ -53,7 +53,6 @@ $PER_PAGE = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 3;
                         echo "<p style='color: orange; text-align:center;'>NPK sudah terdaftar, tidak bisa ditambahkan!</p>";
                     }
                 }
-
                 $start = isset($_GET['start']) ? (int)$_GET['start'] : 0;
                 $display_data = array_slice($dosens, $start, $PER_PAGE);
                 ?>
