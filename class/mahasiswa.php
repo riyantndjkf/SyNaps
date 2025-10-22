@@ -56,8 +56,5 @@ class Mahasiswa extends classParent {
     }
 }
 
-$mhsObj = new Mahasiswa();
-$mahasiswas = $mhsObj->getMahasiswa();
-
 ?>
 

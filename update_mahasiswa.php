@@ -5,12 +5,11 @@ $mhsObj = new Mahasiswa();
 $mahasiswa = $mhsObj->getMahasiswa($_GET['nrp']);
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Mahasiswa</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="container">

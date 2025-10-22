@@ -11,7 +11,7 @@ class Akun extends classParent
     public function getAkun($username)
     {
         $sql = "SELECT * FROM akun WHERE username = ?";
-        $stmt = $this->mysqli->prepare($sql); // ✅ gunakan $this->mysqli, bukan $this->conn
+        $stmt = $this->mysqli->prepare($sql);
         if (!$stmt) return false;
 
         $stmt->bind_param("s", $username);
@@ -73,8 +73,7 @@ class Akun extends classParent
         $stmt = $this->mysqli->prepare($query);
         $stmt->bind_param("ss", $hash, $username);
 
-        $stmt->execute();
-        return $stmt->affected_rows;
+        return $stmt->execute();
     }
 }
 ?>

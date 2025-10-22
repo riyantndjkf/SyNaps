@@ -3,10 +3,10 @@ session_start();
 require_once("class/akun.php"); 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') { 
-    $username = trim($_POST['username']); 
-    $password = trim($_POST['password']); 
+    $username = $_POST['username']; 
+    $password = $_POST['password']; 
     if (empty($username) || empty($password)) { 
-        header("Location: login.php?err=empty");
+        header("Location: login.php?status=empty");
         exit;
     } 
     $akun = new Akun(); 
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("Location: " . $redirect_url); 
         exit; 
     } else { 
-        header("Location: login.php?err=invalid"); 
+        header("Location: login.php?status=error"); 
         exit; 
     } 
 } else {

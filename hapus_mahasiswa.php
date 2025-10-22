@@ -9,8 +9,8 @@ if (isset($_GET["nrp"])) {
 
     $mhs = $mhsObj->getMahasiswa($nrp);
 
-    if ($mhs && $mhs['foto_extension']) {
-        $fotoFile = "images/" . $nrp . "." . $mhs['foto_extension'];
+    if ($mhs && $mhs['foto_extention']) {
+        $fotoFile = "images/" . $nrp . "." . $mhs['foto_extention'];
         if (file_exists($fotoFile)) {
             unlink($fotoFile);
         }

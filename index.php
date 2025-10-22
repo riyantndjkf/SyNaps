@@ -3,12 +3,11 @@ require_once("security.php");
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Synaps - Home</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
@@ -19,10 +18,10 @@ require_once("security.php");
             <h2>Selamat Datang,
                 <?php 
                     if (!empty($_SESSION['nrp_mahasiswa'])) {
-                        echo "Mahasiswa " . htmlspecialchars($_SESSION['username']) . "</h2>";
+                        echo "Mahasiswa " . $_SESSION['username'] . "</h2>";
                         echo "<p>Gunakan menu di dibawah untuk mengganti password Anda atau logout dari sistem.</p>";
                     } elseif (!empty($_SESSION['npk_dosen'])) {
-                        echo "Dosen " . htmlspecialchars($_SESSION['username']) . "</h2>";
+                        echo "Dosen " . $_SESSION['username'] . "</h2>";
                         echo "<p>Gunakan menu di dibawah untuk mengganti password Anda atau logout dari sistem.</p>";
                     } else {
                         echo "Admin</h2> ";
@@ -34,15 +33,12 @@ require_once("security.php");
                 <h3>Menu</h3>
 
                 <?php if ($_SESSION['isadmin'] == 1) { ?>
-                    <!-- Menu untuk Admin -->
-                     
                     <a href="display_dosen.php">Kelola Dosen</a><br>
                     <a href="display_mahasiswa.php">Kelola Mahasiswa</a><br>
                     <a href="update_password.php">Change Password</a><br>
                     <a href="logout.php">Logout</a><br>
 
                 <?php } else { ?>
-                    <!-- Menu untuk Dosen / Mahasiswa -->
                     <a href="update_password.php">Update Password</a><br>
                     <a href="logout.php">Logout</a><br>
                 <?php } ?>

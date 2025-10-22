@@ -6,7 +6,7 @@ $akun = new Akun();
 $username = $_SESSION['username'];
 ?>
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Update Password</title>
@@ -15,12 +15,12 @@ $username = $_SESSION['username'];
     <h2>Update Password</h2>
 
     <?php
-    if (isset($_GET['msg'])) {
-        if ($_GET['msg'] == 'EMPTY') echo "<p style='color:red;'>Semua field wajib diisi!</p>";
-        elseif ($_GET['msg'] == 'WRONG') echo "<p style='color:red;'>Password lama salah!</p>";
-        elseif ($_GET['msg'] == 'DIFF') echo "<p style='color:red;'>Password baru dan konfirmasi tidak cocok!</p>";
-        elseif ($_GET['msg'] == 'OK') echo "<p style='color:green;'>Password berhasil diubah!</p>";
-        elseif ($_GET['msg'] == 'FAIL') echo "<p style='color:red;'>Terjadi kesalahan saat mengubah password!</p>";
+    if (isset($_GET['status'])) {
+        if ($_GET['status'] == 'empty') echo "<p style='color:red;'>Semua field wajib diisi!</p>";
+        elseif ($_GET['status'] == 'wrong') echo "<p style='color:red;'>Password lama salah!</p>";
+        elseif ($_GET['status'] == 'diff') echo "<p style='color:red;'>Password baru dan konfirmasi tidak cocok!</p>";
+        elseif ($_GET['status'] == 'success') echo "<p style='color:green;'>Password berhasil diubah!</p>";
+        elseif ($_GET['status'] == 'error') echo "<p style='color:red;'>Terjadi kesalahan saat mengubah password!</p>";
     }
     ?>
 
