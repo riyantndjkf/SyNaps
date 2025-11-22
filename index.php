@@ -39,6 +39,12 @@ require_once("security.php");
                     <a href="logout.php">Logout</a><br>
 
                 <?php } else { ?>
+
+                    <?php if (!empty($_SESSION['npk_dosen'])) { ?>
+                    <a href="display_grup.php">Kelola Grup</a><br>
+                    <a href="tambah_grup.php">Buat Grup Baru</a><br>
+                    <?php } ?>
+                    
                     <a href="update_password.php">Update Password</a><br>
                     <a href="logout.php">Logout</a><br>
                 <?php } ?>
