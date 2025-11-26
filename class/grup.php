@@ -98,5 +98,34 @@ class Grup extends classParent {
         $stmt->bind_param("i", $idgrup);
         return $stmt->execute();
     }
+    //  grup publik yang belum diikuti oleh user
+    public function getAvailablePublicGroups($username) {
+        $sql = "SELECT * FROM grup 
+                WHERE jenis = 'Publik' 
+                AND idgrup NOT IN (SELECT idgrup FROM member_grup WHERE username = ?)";
+        $stmt = $this->mysqli->prepare($sql);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        
+        $data = [];
+        while ($row = $res->fetch_assoc()) {
+            $data[] = $row;
+        }
+        $stmt->close();
+        return $data;
+    }
+
+    // Cari grup berdasarkan kode pendaftaran
+    public function getGrupByCode($kode) {
+        $sql = "SELECT * FROM grup WHERE kode_pendaftaran = ?";
+        $stmt = $this->mysqli->prepare($sql);
+        $stmt->bind_param("s", $kode);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $data = $res->fetch_assoc();
+        $stmt->close();
+        return $data;
+    }
 }
 ?>

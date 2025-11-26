@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2025 at 12:47 PM
+-- Generation Time: Nov 26, 2025 at 04:17 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -119,6 +119,17 @@ CREATE TABLE `grup` (
   `kode_pendaftaran` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `grup`
+--
+
+INSERT INTO `grup` (`idgrup`, `username_pembuat`, `nama`, `deskripsi`, `tanggal_pembentukan`, `jenis`, `kode_pendaftaran`) VALUES
+(1, 'heru', 'Panitia ILPC', 'Informatics Logical Programming Competition -', '2023-08-01 08:00:00', 'Publik', 'ILPC2024'),
+(2, 'tyrza', 'Panitia Maniac', 'Multimedia and Information Academic Committee', '2023-08-05 09:00:00', 'Privat', 'MANIAC24'),
+(3, 'ming', 'Panitia Industrial Game', 'Simulasi permainan industri dan manajemen pab', '2023-08-10 10:00:00', 'Publik', 'IG2024'),
+(4, 'fikri', 'Panitia CEG', 'Chemical Engineering Games - Lomba keilmuan t', '2023-08-12 13:00:00', 'Privat', 'CEG2024'),
+(5, 'tyrza', 'Escape', 'Lomba yang diadakan oleh KMM SPORT Ubaya terk', '2025-11-26 00:00:00', 'Publik', '5S0DMWPZ');
+
 -- --------------------------------------------------------
 
 --
@@ -154,6 +165,18 @@ CREATE TABLE `member_grup` (
   `idgrup` int(11) NOT NULL,
   `username` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `member_grup`
+--
+
+INSERT INTO `member_grup` (`idgrup`, `username`) VALUES
+(1, 'heru'),
+(2, 's160423125'),
+(2, 'tyrza'),
+(3, 'ming'),
+(4, 'fikri'),
+(5, 'tyrza');
 
 -- --------------------------------------------------------
 
@@ -251,7 +274,7 @@ ALTER TABLE `event`
 -- AUTO_INCREMENT for table `grup`
 --
 ALTER TABLE `grup`
-  MODIFY `idgrup` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idgrup` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `thread`
