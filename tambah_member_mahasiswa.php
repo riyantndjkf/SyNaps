@@ -76,9 +76,11 @@ foreach ($allMahasiswa as $m) {
 
     echo '<form method="get" action="" class="search-box">
         <input type="hidden" name="id" value="' . $idgrup . '">
-        <input type="text" name="cari" placeholder="Cari NRP atau Nama..." value="' . htmlentities($cari) . '">
+        <input type="text" name="cari" id="search-input" placeholder="Cari NRP atau Nama..." value="' . htmlentities($cari) . '">
         <button type="submit" class="btn-search">Cari</button>
     </form>';
+
+    echo '<div id="alert-msg" style="display:none; margin-bottom:15px; padding:10px; border-radius:4px; text-align:center; font-weight:bold;"></div>';
 
     echo '<table>
         <thead>
@@ -95,7 +97,7 @@ foreach ($allMahasiswa as $m) {
         echo '<tr><td colspan="4" style="text-align:center;">Data tidak ditemukan.</td></tr>';
     } else {
         foreach ($mahasiswas as $m) {
-            $username_mhs = $m['nrp'];  
+            $username_mhs = 's' . $m['nrp'];  // Tambah prefix 's' untuk username
             $already = $memberObj->isMember($idgrup, $username_mhs);
 
             echo '<tr>';
@@ -107,7 +109,7 @@ foreach ($allMahasiswa as $m) {
             if ($already) {
                 echo '<button class="btn-disabled" disabled>Sudah Ada</button>';
             } else {
-                echo '<button class="btn-add" onclick="window.location.href=\'proses_tambah_member.php?grup=' . $idgrup . '&user=' . $username_mhs . '\'">Tambah</button>';
+                echo '<button class="btn-add btn-add-member" data-group="' . $idgrup . '" data-user="' . $username_mhs . '">Tambah</button>';
             }
             
             echo '</td>';
@@ -120,6 +122,65 @@ foreach ($allMahasiswa as $m) {
     echo '<a href="detail_grup.php?id=' . $idgrup . '"><button type="button" class="btn-back">Kembali ke Grup</button></a>';
     ?>
 </div>
+
+<script src="jquery-3.7.1.js"></script>
+<script>
+$(document).ready(function(){
+    var $alertMsg = $("#alert-msg");
+
+    // Tambah member via AJAX
+    $(document).on("click", ".btn-add-member", function(){
+        var idgrup = $(this).data("group");
+        var user = $(this).data("user");
+        var $btn = $(this);
+
+        $.ajax({
+            url: "ajax/tambah_member_mahasiswa.php",
+            type: "POST",
+            data: { idgrup: idgrup, user: user },
+            success: function(data){
+                var response = data.trim();
+                var parts = response.split('|');
+                var status = parts[0];
+
+                if(status === "success"){
+                    $alertMsg.removeClass("alert-danger").addClass("alert-success")
+                        .text("Mahasiswa berhasil ditambahkan!")
+                        .show();
+                    
+                    // Ubah tombol menjadi disabled
+                    $btn.removeClass("btn-add").addClass("btn-disabled")
+                        .prop("disabled", true)
+                        .text("Sudah Ada");
+                } else {
+                    var errorMsg = "Terjadi kesalahan!";
+                    if(parts[1] === "already_member") errorMsg = "Mahasiswa sudah menjadi member grup ini!";
+                    else if(parts[1] === "unauthorized") errorMsg = "Anda tidak memiliki akses!";
+                    else if(parts[1] === "data_incomplete") errorMsg = "Data tidak lengkap!";
+                    else if(parts[1] && parts[1].includes("db_failed")) {
+                        // Jika ada error detail dari database
+                        errorMsg = "Gagal menambah member: " + (parts.slice(1).join('|') || "Database error");
+                    }
+                    
+                    $alertMsg.removeClass("alert-success").addClass("alert-danger")
+                        .text(errorMsg)
+                        .show();
+                }
+            },
+            error: function(){
+                $alertMsg.removeClass("alert-success").addClass("alert-danger")
+                    .text("Terjadi kesalahan saat menambahkan member!")
+                    .show();
+            }
+        });
+    });
+});
+</script>
+
+<style>
+    .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .alert-danger { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+</style>
 
 </body>
 </html>

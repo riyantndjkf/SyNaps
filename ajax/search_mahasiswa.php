@@ -14,8 +14,9 @@ $results = [];
 // Filter Manual (karena method class getMahasiswa mengambil semua)
 foreach($allMhs as $m) {
     if (stripos($m['nama'], $keyword) !== false || stripos($m['nrp'], $keyword) !== false) {
-        // Cek apakah sudah jadi member
-        $isMember = $memberObj->isMember($idgrup, $m['nrp']);
+        // Cek apakah sudah jadi member (username mahasiswa stored as 's'+nrp)
+        $usernameMahasiswa = 's' . $m['nrp'];
+        $isMember = $memberObj->isMember($idgrup, $usernameMahasiswa);
         
         echo "<tr>";
         echo "<td>" . htmlentities($m['nrp']) . "</td>";
@@ -24,7 +25,8 @@ foreach($allMhs as $m) {
         if ($isMember) {
             echo "<button disabled style='background:#ccc; cursor:not-allowed;'>Sudah Join</button>";
         } else {
-            echo "<button class='btnAddMember' data-nrp='".$m['nrp']."' style='background:#28a745; color:white;'>Tambah</button>";
+            // send username in data-user to be consistent with proses endpoints
+            echo "<button class='btnAddMember' data-user='".$usernameMahasiswa."' style='background:#28a745; color:white;'>Tambah</button>";
         }
         echo "</td>";
         echo "</tr>";

@@ -43,7 +43,9 @@ class MemberGrup extends classParent {
         $sql = "INSERT INTO member_grup (idgrup, username) VALUES (?, ?)";
         $stmt = $this->mysqli->prepare($sql);
         $stmt->bind_param("is", $idgrup, $username);
-        return $stmt->execute();
+        $result = $stmt->execute();
+        $stmt->close();
+        return $result;
     }
 
     // Hapus member

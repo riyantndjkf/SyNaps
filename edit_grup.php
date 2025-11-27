@@ -60,32 +60,94 @@ if (!$grup || $grup['username_pembuat'] != $_SESSION['username']) {
     $selPrivat = ($grup['jenis'] == 'Privat') ? 'selected' : '';
     $selPublik = ($grup['jenis'] == 'Publik') ? 'selected' : '';
 
-    echo '<form method="post" action="proses_edit_grup.php">
+    echo '<form id="formEditGrup" method="post">
         <input type="hidden" name="idgrup" value="' . $grup['idgrup'] . '">
+        
+        <div id="alert-msg" style="display:none; margin-bottom:15px; padding:10px; border-radius:4px; text-align:center; font-weight:bold;"></div>
 
         <div class="form-group">
             <label>Nama Grup</label>
-            <input type="text" name="nama" value="' . htmlentities($grup['nama']) . '" required>
+            <input type="text" name="nama" id="nama" value="' . htmlentities($grup['nama']) . '" required>
         </div>
 
         <div class="form-group">
             <label>Deskripsi</label>
-            <textarea name="deskripsi">' . htmlentities($grup['deskripsi']) . '</textarea>
+            <textarea name="deskripsi" id="deskripsi">' . htmlentities($grup['deskripsi']) . '</textarea>
         </div>
 
         <div class="form-group">
             <label>Jenis Grup</label>
-            <select name="jenis">
+            <select name="jenis" id="jenis">
                 <option value="Privat" ' . $selPrivat . '>Privat</option>
                 <option value="Publik" ' . $selPublik . '>Publik</option>
             </select>
         </div>
 
-        <button type="submit" class="btn-save">Simpan Perubahan</button>
+        <button type="submit" class="btn-save" id="btn-submit">Simpan Perubahan</button>
         <a href="detail_grup.php?id=' . $idgrup . '"><button type="button" class="btn-back">Kembali</button></a>
     </form>';
     ?>
 </div>
+
+<script src="jquery-3.7.1.js"></script>
+<script>
+$(document).ready(function(){
+    $("#formEditGrup").on("submit", function(e){
+        e.preventDefault();
+
+        var idgrup = $("input[name='idgrup']").val();
+        var nama = $("input[name='nama']").val();
+        var deskripsi = $("textarea[name='deskripsi']").val();
+        var jenis = $("select[name='jenis']").val();
+        var $alertMsg = $("#alert-msg");
+        var $btnSubmit = $("#btn-submit");
+
+        $btnSubmit.prop("disabled", true).css("background-color", "#ccc");
+
+        $.ajax({
+            url: "ajax/edit_grup.php",
+            type: "POST",
+            data: { idgrup: idgrup, nama: nama, deskripsi: deskripsi, jenis: jenis },
+            success: function(data){
+                var response = data.trim();
+                var parts = response.split('|');
+                var status = parts[0];
+                var value = parts[1] || '';
+
+                if(status === "success"){
+                    $alertMsg.removeClass("alert-danger").addClass("alert-success")
+                        .text("Grup berhasil diupdate!")
+                        .show();
+                    
+                    setTimeout(function(){
+                        window.location.href = "detail_grup.php?id=" + value + "&status=update_success";
+                    }, 1500);
+                } else {
+                    var errorMsg = "Terjadi kesalahan!";
+                    if(value === "nama_required") errorMsg = "Nama grup tidak boleh kosong!";
+                    else if(value === "unauthorized_access") errorMsg = "Anda tidak memiliki akses untuk mengedit grup ini!";
+                    
+                    $alertMsg.removeClass("alert-success").addClass("alert-danger")
+                        .text(errorMsg)
+                        .show();
+                    $btnSubmit.prop("disabled", false).css("background-color", "#28a745");
+                }
+            },
+            error: function(){
+                $alertMsg.removeClass("alert-success").addClass("alert-danger")
+                    .text("Terjadi kesalahan saat mengirim data!")
+                    .show();
+                $btnSubmit.prop("disabled", false).css("background-color", "#28a745");
+            }
+        });
+    });
+});
+</script>
+
+<style>
+    .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .alert-danger { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+</style>
 
 </body>
 </html>

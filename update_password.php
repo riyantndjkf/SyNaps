@@ -74,41 +74,88 @@ $username = $_SESSION['username'];
     <div class="container">
         <h2>Ganti Password</h2>
 
-        <?php
-        if (isset($_GET['status'])) {
-            if ($_GET['status'] == 'success') {
-                echo '<div class="alert alert-success">Password berhasil diubah!</div>';
-            } else {
-                echo '<div class="alert alert-danger">';
-                if ($_GET['status'] == 'empty') echo "Semua field wajib diisi!";
-                elseif ($_GET['status'] == 'wrong') echo "Password lama salah!";
-                elseif ($_GET['status'] == 'diff') echo "Konfirmasi password tidak cocok!";
-                elseif ($_GET['status'] == 'error') echo "Terjadi kesalahan sistem!";
-                echo '</div>';
-            }
-        }
-        ?>
+        <div id="alert-msg" style="display:none;"></div>
 
-        <form method="post" action="proses_update_password.php">
+        <form id="formUpdatePassword" method="post">
             <div class="form-group">
                 <label>Password Lama</label>
-                <input type="password" name="oldpwd" required>
+                <input type="password" name="oldpwd" id="oldpwd" required>
             </div>
 
             <div class="form-group">
                 <label>Password Baru</label>
-                <input type="password" name="newpwd" required>
+                <input type="password" name="newpwd" id="newpwd" required>
             </div>
 
             <div class="form-group">
                 <label>Ulangi Password Baru</label>
-                <input type="password" name="newpwd2" required>
+                <input type="password" name="newpwd2" id="newpwd2" required>
             </div>
 
-            <button type="submit">Simpan Password</button>
+            <button type="submit" id="btn-submit">Simpan Password</button>
             <a href="index.php"><button type="button" class="btn-back">Kembali ke Home</button></a>
         </form>
     </div>
+
+    <script src="jquery-3.7.1.js"></script>
+    <script>
+    $(document).ready(function(){
+        $("#formUpdatePassword").on("submit", function(e){
+            e.preventDefault();
+
+            var oldpwd = $("#oldpwd").val();
+            var newpwd = $("#newpwd").val();
+            var newpwd2 = $("#newpwd2").val();
+            var $alertMsg = $("#alert-msg");
+            var $btnSubmit = $("#btn-submit");
+
+            $btnSubmit.prop("disabled", true).css("background-color", "#ccc");
+
+            $.ajax({
+                url: "ajax/update_password.php",
+                type: "POST",
+                data: { oldpwd: oldpwd, newpwd: newpwd, newpwd2: newpwd2 },
+                success: function(data){
+                    var response = data.trim();
+                    var parts = response.split('|');
+                    var status = parts[0];
+                    var reason = parts[1] || '';
+
+                    if(status === "success"){
+                        $alertMsg.removeClass("alert-danger").addClass("alert-success")
+                            .text("Password berhasil diubah!")
+                            .show();
+                        
+                        // Clear form
+                        $("#formUpdatePassword")[0].reset();
+                        $btnSubmit.prop("disabled", false).css("background-color", "#28a745");
+                        
+                        setTimeout(function(){
+                            window.location.href = "index.php";
+                        }, 2000);
+                    } else {
+                        var errorMsg = "Terjadi kesalahan!";
+                        if(reason === "empty_fields") errorMsg = "Semua field wajib diisi!";
+                        else if(reason === "password_mismatch") errorMsg = "Konfirmasi password tidak cocok!";
+                        else if(reason === "wrong_password") errorMsg = "Password lama salah!";
+                        else if(reason === "unauthorized") errorMsg = "Anda harus login terlebih dahulu!";
+                        
+                        $alertMsg.removeClass("alert-success").addClass("alert-danger")
+                            .text(errorMsg)
+                            .show();
+                        $btnSubmit.prop("disabled", false).css("background-color", "#28a745");
+                    }
+                },
+                error: function(){
+                    $alertMsg.removeClass("alert-success").addClass("alert-danger")
+                        .text("Terjadi kesalahan saat mengirim data!")
+                        .show();
+                    $btnSubmit.prop("disabled", false).css("background-color", "#28a745");
+                }
+            });
+        });
+    });
+    </script>
 
 </body>
 </html>

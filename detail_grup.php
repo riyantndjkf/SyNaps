@@ -35,62 +35,18 @@ $members = $memberObj->getMembersByGroup($idgrup);
 
 // Cek Pembuat
 $isPembuat = ($grup['username_pembuat'] == $_SESSION['username']);
+// apakah dosen (bukan mahasiswa) yang login dan menjadi member grup?
+$isDosenMember = false;
+if (!empty($_SESSION['npk_dosen'])) {
+    $isDosenMember = $memberObj->isMember($idgrup, $_SESSION['username']);
+}
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Detail Grup</title>
-    <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #f4f4f4; 
-            padding: 20px; 
-            margin: 0;
-        }
-        .container { 
-            background: white; 
-            padding: 30px; 
-            border-radius: 8px; 
-            max-width: 900px; 
-            margin: auto; 
-            box-shadow: 0 0 10px rgba(0,0,0,0.1); 
-        }
-        h1 { margin-top: 0; color: #333; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 15px; font-size: 24px; }
-        h2 { color: #555; border-bottom: 2px solid #2c62a3; padding-bottom: 5px; margin-top: 30px; font-size: 20px; }
-        h3 { margin-top: 0; color: #444; margin-bottom: 10px; font-size: 18px; }
-        
-        /* Style Tabel */
-        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; font-size: 14px;}
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: top; }
-        th { background-color: #f8f9fa; color: #333; font-weight: 600; width: 25%; }
-        tr:nth-child(even) { background-color: #f9f9f9; }
-
-        /* Style Tombol */
-        button { cursor: pointer; padding: 8px 15px; border: none; border-radius: 4px; font-size: 13px; margin-right: 5px; transition: background 0.3s;}
-        .btn-back { background-color: #6c757d; color: white; margin-bottom: 20px; }
-        .btn-back:hover { background-color: #5a6268; }
-        
-        .btn-menu { background-color: #007bff; color: white; margin-bottom: 5px; }
-        .btn-menu:hover { background-color: #0056b3; }
-
-        .btn-edit { background-color: #ffc107; color: black; }
-        .btn-edit:hover { background-color: #e0a800; }
-        
-        .btn-delete { background-color: #dc3545; color: white; }
-        .btn-delete:hover { background-color: #c82333; }
-        
-        /* Style Notifikasi */
-        .alert { padding: 10px; margin-bottom: 15px; border-radius: 4px; text-align: center; font-weight: bold; font-size: 14px; }
-        .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .alert-danger { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-
-        /* Modal Styles */
-        .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
-        .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 50%; border-radius: 8px; }
-        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
-        .close:hover { color: black; }
-    </style>
+    <link rel="stylesheet" href="styles/styles.css">
 </head>
 
 <body>
@@ -142,7 +98,15 @@ $isPembuat = ($grup['username_pembuat'] == $_SESSION['username']);
         echo '<h3 style="margin-top:0;">Menu Admin Grup</h3>';
         echo '<button class="btn-menu" onclick="location.href=\'edit_grup.php?id=' . $idgrup . '\'">Edit Informasi Grup</button> ';
         echo '<button class="btn-menu" onclick="location.href=\'kelola_member.php?id=' . $idgrup . '\'">Kelola Member</button> ';
-        echo '<button class="btn-menu" onclick="location.href=\'tambah_member.php?id=' . $idgrup . '\'">+ Member Mahasiswa</button> ';
+        echo '<button class="btn-menu" onclick="location.href=\'tambah_member_mahasiswa.php?id=' . $idgrup . '\'">+ Member Mahasiswa</button> ';
+        echo '<button class="btn-menu" onclick="location.href=\'tambah_member_dosen.php?id=' . $idgrup . '\'">+ Member Dosen</button> ';
+        // Tambah event akan ditampilkan juga untuk dosen member di bawah
+        echo '</div>';
+    }
+
+    // Jika user adalah pembuat atau dosen member, tunjukkan tombol tambah event
+    if ($isPembuat || $isDosenMember) {
+        echo '<div style="margin-bottom:20px;">';
         echo '<button class="btn-menu" onclick="location.href=\'tambah_event.php?id=' . $idgrup . '\'">+ Tambah Event</button>';
         echo '</div>';
     }
@@ -182,9 +146,9 @@ $isPembuat = ($grup['username_pembuat'] == $_SESSION['username']);
                     }
                     echo '</td>';
 
-                    // Kolom Aksi (Hanya Pembuat yang bisa Edit/Hapus)
+                    // Kolom Aksi (Pembuat grup atau dosen member bisa Edit/Hapus)
                     echo '<td>';
-                    if ($isPembuat) {
+                    if ($isPembuat || $isDosenMember) {
                         echo '<button class="btn-edit" onclick="window.location.href=\'update_event.php?id=' . $ev['idevent'] . '\'">Edit</button> ';
                         // Tombol Hapus
                         echo '<button class="btn-delete" onclick="if (confirm(\'Yakin ingin menghapus event ini?\')) { window.location.href=\'hapus_event.php?id=' . $ev['idevent'] . '&grup=' . $ev['idgrup'] . '\'; }">Hapus</button>';

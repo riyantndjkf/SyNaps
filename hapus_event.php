@@ -1,6 +1,8 @@
 <?php
 require_once("security.php");
 require_once("class/event.php");
+require_once("class/grup.php");
+require_once("class/member_grup.php");
 
 if (empty($_SESSION['npk_dosen'])) {
     header("Location: index.php");
@@ -19,6 +21,18 @@ $eventObj = new Event();
 
 // Ambil data event dulu
 $event = $eventObj->getEvent($idevent);
+
+// Check permission: only pembuat grup or dosen member can delete
+$grupObj = new Grup();
+$grup = $grupObj->getGrup($idgrup);
+$memberObj = new MemberGrup();
+$username = $_SESSION['username'] ?? '';
+$isPembuat = ($grup && $grup['username_pembuat'] == $username);
+$isDosenMember = !empty($_SESSION['npk_dosen']) && $memberObj->isMember($idgrup, $username);
+if (!$isPembuat && !$isDosenMember) {
+    header("Location: detail_grup.php?id=$idgrup&status=unauthorized");
+    exit;
+}
 
 if ($event) {
     // Hapus poster jika ada

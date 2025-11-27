@@ -60,5 +60,27 @@ require_once("security.php");
             <a href="display_dosen.php"><button type="button" class="btn-back">Kembali</button></a>
         </form> 
     </div>
+    <script src="jquery-3.7.1.js"></script>
+    <script>
+    $("#npk").on("keyup blur", function(){
+        var npk = $(this).val();
+        $.post("ajax/check_duplicate.php", { id: npk, type: 'dosen' })
+         .done(function(data){
+             if(data == "exist") {
+                 $("#npk").css("border", "2px solid red");
+                 if($("#err-msg").length == 0) {
+                     $("#npk").after("<span id='err-msg' style='color:red; font-size:12px;'>NPK sudah terdaftar!</span>");
+                 }
+                 $("button[type='submit']").prop("disabled", true);
+                 $(".btn-save").css("background-color", "#ccc");
+             } else {
+                 $("#npk").css("border", "1px solid #ccc");
+                 $("#err-msg").remove();
+                 $("button[type='submit']").prop("disabled", false);
+                 $(".btn-save").css("background-color", "#28a745");
+             }
+         });
+    });
+    </script>
 </body>
 </html>

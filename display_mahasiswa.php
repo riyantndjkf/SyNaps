@@ -8,61 +8,7 @@ require_once("security.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Mahasiswa</title>
-    <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #f4f4f4; 
-            padding: 20px; 
-            margin: 0;
-        }
-        .container { 
-            background: white; 
-            padding: 30px; 
-            border-radius: 8px; 
-            max-width: 1000px; 
-            margin: auto; 
-            box-shadow: 0 0 10px rgba(0,0,0,0.1); 
-        }
-        h1 { margin-top: 0; color: #333; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 15px; font-size: 24px; }
-        h2 { color: #555; border-bottom: 2px solid #2c62a3; padding-bottom: 5px; margin-top: 10px; font-size: 20px; }
-
-        /* Menu Navigasi */
-        .menu { margin-bottom: 20px; background: #e9ecef; padding: 10px; border-radius: 4px; text-align: center; }
-        .menu a { text-decoration: none; color: #007bff; font-weight: bold; margin: 0 10px; }
-        .menu a:hover { text-decoration: underline; }
-
-        /* Table */
-        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; font-size: 14px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle; }
-        th { background-color: #f8f9fa; color: #333; font-weight: 600; }
-        tr:nth-child(even) { background-color: #f9f9f9; }
-        img.foto { width: 80px; border-radius: 4px; border: 1px solid #ccc; }
-
-        /* Buttons */
-        button { cursor: pointer; padding: 6px 12px; border: none; border-radius: 4px; font-size: 13px; transition: background 0.3s; }
-        .btn-add { background-color: #28a745; color: white; font-size: 14px; padding: 8px 15px; margin-bottom: 15px; }
-        .btn-add:hover { background-color: #218838; }
-
-        /* Button classes from AJAX content */
-        .editBtn { background-color: #ffc107; color: black; margin-right: 5px; }
-        .editBtn:hover { background-color: #e0a800; }
-        
-        .hapusBtn { background-color: #dc3545; color: white; }
-        .hapusBtn:hover { background-color: #c82333; }
-
-        /* Paging */
-        .page-link { background-color: #007bff; color: white; margin: 0 2px; }
-        .page-link:hover { background-color: #0056b3; }
-        #pagination-container strong { margin: 0 5px; color: #555; }
-
-        /* Alerts */
-        .alert { padding: 10px; margin-bottom: 15px; border-radius: 4px; text-align: center; font-weight: bold; }
-        .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .alert-danger { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .alert-warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
-        
-        .controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    </style>
+    <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
     <div class="container">

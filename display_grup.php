@@ -42,48 +42,7 @@ if ($isDosen) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Grup</title>
-    <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #f4f4f4; 
-            padding: 20px; 
-            margin: 0;
-        }
-        .container { 
-            background: white; 
-            padding: 30px; 
-            border-radius: 8px; 
-            max-width: 900px; /* Lebih lebar sedikit karena ada tabel */
-            margin: auto; 
-            box-shadow: 0 0 10px rgba(0,0,0,0.1); 
-        }
-        h1 { margin-top: 0; color: #333; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 15px;}
-        h2.section-title { color: #555; border-bottom: 2px solid #2c62a3; padding-bottom: 5px; margin-top: 30px; font-size: 20px;}
-        
-        /* Style Tabel */
-        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; font-size: 14px;}
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background-color: #f8f9fa; color: #333; font-weight: 600; }
-        tr:nth-child(even) { background-color: #f9f9f9; }
-
-        /* Style Tombol */
-        button { cursor: pointer; padding: 6px 12px; border: none; border-radius: 4px; font-size: 13px;}
-        .btn-back { background-color: #6c757d; color: white; margin-bottom: 15px; }
-        .btn-add { background-color: #28a745; color: white; font-size: 14px; padding: 8px 15px; }
-        .detailBtn { background-color: #17a2b8; color: white; }
-        .keluarBtn { background-color: #ffc107; color: black; }
-        .hapusGrupBtn { background-color: #dc3545; color: white; }
-        
-        .join-box { 
-            background: #e9ecef; 
-            padding: 20px; 
-            border-radius: 8px; 
-            margin-bottom: 20px; 
-            border: 1px solid #dee2e6;
-        }
-        .join-box input[type="text"] { padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 200px;}
-        .join-box button { background-color: #007bff; color: white; padding: 8px 15px;}
-    </style>
+    <link rel="stylesheet" href="styles/styles.css">
 </head>
 
 <body>
