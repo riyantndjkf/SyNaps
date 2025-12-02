@@ -46,56 +46,7 @@ if (!empty($_SESSION['npk_dosen'])) {
 <head>
     <meta charset="UTF-8">
     <title>Detail Grup</title>
-    <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #f4f4f4; 
-            padding: 20px; 
-            margin: 0;
-        }
-        .container { 
-            background: white; 
-            padding: 30px; 
-            border-radius: 8px; 
-            max-width: 900px; 
-            margin: auto; 
-            box-shadow: 0 0 10px rgba(0,0,0,0.1); 
-        }
-        h1 { margin-top: 0; color: #333; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 15px; font-size: 24px; }
-        h2 { color: #555; border-bottom: 2px solid #2c62a3; padding-bottom: 5px; margin-top: 30px; font-size: 20px; }
-        h3 { margin-top: 0; color: #444; margin-bottom: 10px; font-size: 18px; }
-        
-        /* Style Tabel */
-        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; font-size: 14px;}
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: top; }
-        th { background-color: #f8f9fa; color: #333; font-weight: 600; width: 25%; }
-        tr:nth-child(even) { background-color: #f9f9f9; }
-
-        /* Style Tombol */
-        button { cursor: pointer; padding: 8px 15px; border: none; border-radius: 4px; font-size: 13px; margin-right: 5px; transition: background 0.3s;}
-        .btn-back { background-color: #6c757d; color: white; margin-bottom: 20px; }
-        .btn-back:hover { background-color: #5a6268; }
-        
-        .btn-menu { background-color: #007bff; color: white; margin-bottom: 5px; }
-        .btn-menu:hover { background-color: #0056b3; }
-
-        .btn-edit { background-color: #ffc107; color: black; }
-        .btn-edit:hover { background-color: #e0a800; }
-        
-        .btn-delete { background-color: #dc3545; color: white; }
-        .btn-delete:hover { background-color: #c82333; }
-        
-        /* Style Notifikasi */
-        .alert { padding: 10px; margin-bottom: 15px; border-radius: 4px; text-align: center; font-weight: bold; font-size: 14px; }
-        .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .alert-danger { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-
-        /* Modal Styles */
-        .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
-        .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 50%; border-radius: 8px; }
-        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
-        .close:hover { color: black; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -114,7 +65,7 @@ if (!empty($_SESSION['npk_dosen'])) {
   </div>
 </div>
 
-<div class="container">
+<div class="container wide">
     <h1>Detail Grup: <?php echo htmlentities($grup['nama']); ?></h1>
 
     <a href="display_grup.php"><button class="btn-back">Kembali</button></a>
@@ -149,7 +100,6 @@ if (!empty($_SESSION['npk_dosen'])) {
         echo '<button class="btn-menu" onclick="location.href=\'kelola_member.php?id=' . $idgrup . '\'">Kelola Member</button> ';
         echo '<button class="btn-menu" onclick="location.href=\'tambah_member_mahasiswa.php?id=' . $idgrup . '\'">+ Member Mahasiswa</button> ';
         echo '<button class="btn-menu" onclick="location.href=\'tambah_member_dosen.php?id=' . $idgrup . '\'">+ Member Dosen</button> ';
-        // Tambah event akan ditampilkan juga untuk dosen member di bawah
         echo '</div>';
     }
 
@@ -195,11 +145,10 @@ if (!empty($_SESSION['npk_dosen'])) {
                     }
                     echo '</td>';
 
-                    // Kolom Aksi (Pembuat grup atau dosen member bisa Edit/Hapus)
+                    // Kolom Aksi
                     echo '<td>';
                     if ($isPembuat || $isDosenMember) {
                         echo '<button class="btn-edit" onclick="window.location.href=\'update_event.php?id=' . $ev['idevent'] . '\'">Edit</button> ';
-                        // Tombol Hapus
                         echo '<button class="btn-delete" onclick="if (confirm(\'Yakin ingin menghapus event ini?\')) { window.location.href=\'hapus_event.php?id=' . $ev['idevent'] . '&grup=' . $ev['idgrup'] . '\'; }">Hapus</button>';
                     } else {
                         echo '<span style="color:#999; font-size:12px;">(Read Only)</span>';
@@ -231,14 +180,12 @@ if (!empty($_SESSION['npk_dosen'])) {
                     echo '<tr>';
                     echo '<td>' . htmlentities($m['username']) . '</td>';
                     
-                    // Kolom Nama
                     echo '<td>';
                     if (!empty($m['nama_mahasiswa'])) echo $m['nama_mahasiswa'];
                     else if (!empty($m['nama_dosen'])) echo $m['nama_dosen'];
                     else echo "-";
                     echo '</td>';
 
-                    // Kolom Status
                     echo '<td>';
                     if (!empty($m['nrp_mahasiswa'])) echo '<span style="background:#e2e6ea; padding:2px 6px; border-radius:4px; font-size:12px;">Mahasiswa</span>';
                     else if (!empty($m['npk_dosen'])) echo '<span style="background:#d1ecf1; color:#0c5460; padding:2px 6px; border-radius:4px; font-size:12px;">Dosen</span>';
@@ -258,16 +205,13 @@ $(document).ready(function(){
     var modal = $("#myModal");
     var idgrup = "<?php echo $idgrup; ?>";
 
-    // Buka Modal (Ganti tombol + Member Mahasiswa lama ke tombol trigger ini)
     $(".btn-tambah-member").click(function(){ 
         modal.show(); 
-        $("#txtCari").val("").trigger("keyup"); // Reset & Load all
+        $("#txtCari").val("").trigger("keyup"); 
     });
 
-    // Tutup Modal
     $(".close").click(function(){ modal.hide(); });
 
-    // Live Search (Tugas B)
     $("#txtCari").keyup(function(){
         var keyword = $(this).val();
         $.get("ajax/search_mahasiswa.php", { cari: keyword, idgrup: idgrup })
@@ -276,15 +220,12 @@ $(document).ready(function(){
          });
     });
 
-    // Aksi Tambah Member (Ajax)
     $("body").on("click", ".btnAddMember", function(){
         var nrp = $(this).data("nrp");
-        $.get("proses_tambah_member.php", { grup: idgrup, user: nrp }) // Proses ini akan redirect, sebaiknya diubah return json
+        $.get("proses_tambah_member.php", { grup: idgrup, user: nrp }) 
          .done(function(){
              alert("Berhasil ditambahkan!");
-             // Refresh tabel search agar tombol berubah jadi 'Sudah Join'
              $("#txtCari").trigger("keyup");
-             // Opsional: Refresh halaman utama untuk update list member di bawah
              location.reload(); 
          });
     });

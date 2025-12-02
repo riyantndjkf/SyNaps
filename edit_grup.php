@@ -28,22 +28,7 @@ if (!$grup || $grup['username_pembuat'] != $_SESSION['username']) {
 <head>
     <meta charset="UTF-8">
     <title>Edit Grup</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; padding: 20px; margin: 0; }
-        .container { background: white; padding: 30px; border-radius: 8px; max-width: 600px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        h1 { margin-top: 0; color: #333; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 15px; font-size: 24px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; }
-        input[type="text"], textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
-        textarea { resize: vertical; min-height: 100px; }
-        button { cursor: pointer; padding: 10px 20px; border: none; border-radius: 4px; font-size: 14px; margin-top: 10px; }
-        .btn-save { background-color: #28a745; color: white; width: 100%; }
-        .btn-save:hover { background-color: #218838; }
-        .btn-back { background-color: #6c757d; color: white; width: 100%; margin-top: 5px; }
-        .btn-back:hover { background-color: #5a6268; }
-        .alert { padding: 10px; margin-bottom: 15px; border-radius: 4px; text-align: center; font-weight: bold; font-size: 14px; }
-        .alert-danger { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -56,14 +41,13 @@ if (!$grup || $grup['username_pembuat'] != $_SESSION['username']) {
         elseif ($_GET['status'] == 'error') echo '<div class="alert alert-danger">Terjadi kesalahan saat menyimpan!</div>';
     }
 
-    // Logic untuk selected option
     $selPrivat = ($grup['jenis'] == 'Privat') ? 'selected' : '';
     $selPublik = ($grup['jenis'] == 'Publik') ? 'selected' : '';
 
     echo '<form id="formEditGrup" method="post">
         <input type="hidden" name="idgrup" value="' . $grup['idgrup'] . '">
         
-        <div id="alert-msg" style="display:none; margin-bottom:15px; padding:10px; border-radius:4px; text-align:center; font-weight:bold;"></div>
+        <div id="alert-msg" class="alert" style="display:none;"></div>
 
         <div class="form-group">
             <label>Nama Grup</label>
@@ -83,7 +67,7 @@ if (!$grup || $grup['username_pembuat'] != $_SESSION['username']) {
             </select>
         </div>
 
-        <button type="submit" class="btn-save" id="btn-submit">Simpan Perubahan</button>
+        <button type="submit" class="btn-save btn-update" id="btn-submit">Simpan Perubahan</button>
         <a href="detail_grup.php?id=' . $idgrup . '"><button type="button" class="btn-back">Kembali</button></a>
     </form>';
     ?>
@@ -102,7 +86,7 @@ $(document).ready(function(){
         var $alertMsg = $("#alert-msg");
         var $btnSubmit = $("#btn-submit");
 
-        $btnSubmit.prop("disabled", true).css("background-color", "#ccc");
+        $btnSubmit.prop("disabled", true).addClass("btn-disabled");
 
         $.ajax({
             url: "ajax/edit_grup.php",
@@ -130,24 +114,18 @@ $(document).ready(function(){
                     $alertMsg.removeClass("alert-success").addClass("alert-danger")
                         .text(errorMsg)
                         .show();
-                    $btnSubmit.prop("disabled", false).css("background-color", "#28a745");
+                    $btnSubmit.prop("disabled", false).removeClass("btn-disabled");
                 }
             },
             error: function(){
                 $alertMsg.removeClass("alert-success").addClass("alert-danger")
                     .text("Terjadi kesalahan saat mengirim data!")
                     .show();
-                $btnSubmit.prop("disabled", false).css("background-color", "#28a745");
+                $btnSubmit.prop("disabled", false).removeClass("btn-disabled");
             }
         });
     });
 });
 </script>
-
-<style>
-    .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-    .alert-danger { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-</style>
-
 </body>
 </html>

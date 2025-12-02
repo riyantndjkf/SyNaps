@@ -8,16 +8,7 @@ require_once("security.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Synaps - Home</title>
-    <style>
-        body { font-family: sans-serif; background-color: #f4f4f4; padding: 20px; }
-        .container { background: white; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .header h1 { margin-top: 0; color: #333; text-align: center; }
-        .main-content { margin-top: 20px; }
-        .menu { background: #e9ecef; padding: 15px; border-radius: 5px; }
-        .menu a { text-decoration: none; color: #007bff; font-size: 18px; line-height: 2; }
-        .menu a:hover { text-decoration: underline; }
-        h2 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">

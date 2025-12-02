@@ -7,24 +7,7 @@ require_once("security.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Dosen Baru</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; padding: 20px; margin: 0; }
-        .container { background: white; padding: 30px; border-radius: 8px; max-width: 600px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        h1 { margin-top: 0; color: #333; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 15px; font-size: 24px; }
-        
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; }
-        
-        input[type="text"], input[type="password"], input[type="file"] { 
-            width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;
-        }
-
-        button { cursor: pointer; padding: 10px 20px; border: none; border-radius: 4px; font-size: 14px; margin-top: 10px; }
-        .btn-save { background-color: #28a745; color: white; width: 100%; }
-        .btn-save:hover { background-color: #218838; }
-        .btn-back { background-color: #6c757d; color: white; width: 100%; margin-top: 5px; }
-        .btn-back:hover { background-color: #5a6268; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
@@ -72,12 +55,12 @@ require_once("security.php");
                      $("#npk").after("<span id='err-msg' style='color:red; font-size:12px;'>NPK sudah terdaftar!</span>");
                  }
                  $("button[type='submit']").prop("disabled", true);
-                 $(".btn-save").css("background-color", "#ccc");
+                 $(".btn-save").addClass("btn-disabled");
              } else {
                  $("#npk").css("border", "1px solid #ccc");
                  $("#err-msg").remove();
                  $("button[type='submit']").prop("disabled", false);
-                 $(".btn-save").css("background-color", "#28a745");
+                 $(".btn-save").removeClass("btn-disabled");
              }
          });
     });

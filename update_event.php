@@ -24,17 +24,10 @@ if (!$event) {
     exit;
 }
 
-// Ambil informasi grup untuk kembali ke detail grup
 $grupObj = new Grup();
 $grup = $grupObj->getGrup($event['idgrup']);
 
-// Cek apakah dosen ini adalah member grup (termasuk pembuat grup)
 $memberObj = new MemberGrup();
-$username_dosen = 'd' . $_SESSION['npk_dosen'];
-$isPembuat = ($grup['username_pembuat'] == $_SESSION['username']);
-$isMember = $memberObj->isMember($event['idgrup'], $username_dosen);
-
-// Gunakan username dosen yang sesungguhnya
 $username_dosen = $_SESSION['username'];
 $isMember = $memberObj->isMember($event['idgrup'], $username_dosen);
 ?>
@@ -43,31 +36,14 @@ $isMember = $memberObj->isMember($event['idgrup'], $username_dosen);
 <head>
     <meta charset="UTF-8">
     <title>Edit Event</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; padding: 20px; margin: 0; }
-        .container { background: white; padding: 30px; border-radius: 8px; max-width: 600px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        h1 { margin-top: 0; color: #333; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 15px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; }
-        input[type="text"], input[type="datetime-local"], textarea, select, input[type="file"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
-        textarea { resize: vertical; min-height: 100px; }
-        button { cursor: pointer; padding: 10px 20px; border: none; border-radius: 4px; font-size: 14px; margin-top: 10px; width: 100%; }
-        .btn-save { background-color: #ffc107; color: black; font-weight: bold; }
-        .btn-save:hover { background-color: #e0a800; }
-        .btn-back { background-color: #6c757d; color: white; margin-top: 5px; }
-        .btn-back:hover { background-color: #5a6268; }
-        .alert { padding: 10px; margin-bottom: 15px; border-radius: 4px; text-align: center; font-weight: bold; font-size: 14px; }
-        .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .alert-danger { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .poster-preview { max-width: 200px; border-radius: 4px; margin-top: 10px; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
     <h1>Edit Event: <?= htmlentities($event['judul']); ?></h1>
 
-    <div id="alert-msg" style="display:none;"></div>
+    <div id="alert-msg" class="alert" style="display:none;"></div>
 
     <form id="formUpdateEvent" enctype="multipart/form-data">
         <input type="hidden" name="idevent" value="<?= $event['idevent'] ?>">
@@ -103,7 +79,7 @@ $isMember = $memberObj->isMember($event['idgrup'], $username_dosen);
         <div class="form-group">
             <label>Poster Saat Ini</label>
             <?php if (!empty($event['poster_extension'])): ?>
-                <img src="images/event/<?= $event['judul_slug'] . '.' . $event['poster_extension']; ?>" class="poster-preview">
+                <img src="images/event/<?= $event['judul_slug'] . '.' . $event['poster_extension']; ?>" class="preview">
             <?php else: ?>
                 <i>Tidak ada poster</i>
             <?php endif; ?>
@@ -114,7 +90,7 @@ $isMember = $memberObj->isMember($event['idgrup'], $username_dosen);
             <input type="file" name="poster" id="poster" accept="image/jpeg, image/png">
         </div>
 
-        <button type="submit" class="btn-save" id="btn-submit">Update Event</button>
+        <button type="submit" class="btn-save btn-update" id="btn-submit">Update Event</button>
         <a href="detail_grup.php?id=<?= $event['idgrup']; ?>">
             <button type="button" class="btn-back">Kembali</button>
         </a>
@@ -131,7 +107,7 @@ $(document).ready(function(){
         var $alertMsg = $("#alert-msg");
         var $btnSubmit = $("#btn-submit");
 
-        $btnSubmit.prop("disabled", true).css("background-color", "#ccc");
+        $btnSubmit.prop("disabled", true).addClass("btn-disabled");
 
         $.ajax({
             url: "ajax/update_event.php",
@@ -164,19 +140,18 @@ $(document).ready(function(){
                     $alertMsg.removeClass("alert-success").addClass("alert-danger")
                         .text(errorMsg)
                         .show();
-                    $btnSubmit.prop("disabled", false).css("background-color", "#ffc107");
+                    $btnSubmit.prop("disabled", false).removeClass("btn-disabled");
                 }
             },
             error: function(){
                 $alertMsg.removeClass("alert-success").addClass("alert-danger")
                     .text("Terjadi kesalahan saat mengirim data!")
                     .show();
-                $btnSubmit.prop("disabled", false).css("background-color", "#ffc107");
+                $btnSubmit.prop("disabled", false).removeClass("btn-disabled");
             }
         });
     });
 });
 </script>
-
 </body>
 </html>

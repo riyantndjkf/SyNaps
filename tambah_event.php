@@ -23,13 +23,7 @@ if (!$grup) {
     exit;
 }
 
-// Cek apakah dosen ini adalah member grup (termasuk pembuat grup)
 $memberObj = new MemberGrup();
-$username_dosen = 'd' . $_SESSION['npk_dosen'];
-$isPembuat = ($grup['username_pembuat'] == $_SESSION['username']);
-$isMember = $memberObj->isMember($idgrup, $username_dosen);
-
-// Cek apakah dosen ini adalah member grup (termasuk pembuat grup)
 $username_dosen = $_SESSION['username'];
 $isPembuat = ($grup['username_pembuat'] == $_SESSION['username']);
 $isMember = $memberObj->isMember($idgrup, $username_dosen);
@@ -39,22 +33,7 @@ $isMember = $memberObj->isMember($idgrup, $username_dosen);
 <head>
     <meta charset="UTF-8">
     <title>Tambah Event Baru</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; padding: 20px; margin: 0; }
-        .container { background: white; padding: 30px; border-radius: 8px; max-width: 600px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        h1 { margin-top: 0; color: #333; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 15px; font-size: 24px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; }
-        input[type="text"], input[type="datetime-local"], textarea, select, input[type="file"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
-        textarea { resize: vertical; min-height: 100px; }
-        button { cursor: pointer; padding: 10px 20px; border: none; border-radius: 4px; font-size: 14px; margin-top: 10px; width: 100%; }
-        .btn-save { background-color: #007bff; color: white; margin-bottom: 10px;}
-        .btn-save:hover { background-color: #0056b3; }
-        .btn-back { background-color: #6c757d; color: white; }
-        .btn-back:hover { background-color: #5a6268; }
-        .alert { padding: 10px; margin-bottom: 15px; border-radius: 4px; text-align: center; font-weight: bold; font-size: 14px; }
-        .alert-danger { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -69,7 +48,7 @@ $isMember = $memberObj->isMember($idgrup, $username_dosen);
     echo '<form id="formEvent" enctype="multipart/form-data">
 
         <input type="hidden" name="idgrup" value="' . $idgrup . '">
-        <div id="alert-msg" style="display:none; margin-bottom:15px; padding:10px; border-radius:4px; text-align:center; font-weight:bold;"></div>
+        <div id="alert-msg" style="display:none;" class="alert"></div>
 
         <div class="form-group">
             <label>Judul Event</label>
@@ -117,7 +96,7 @@ $(document).ready(function(){
         var $alertMsg = $("#alert-msg");
         var $btnSubmit = $("#btn-submit");
 
-        $btnSubmit.prop("disabled", true).css("background-color", "#ccc");
+        $btnSubmit.prop("disabled", true).addClass("btn-disabled");
 
         $.ajax({
             url: "ajax/tambah_event.php",
@@ -149,24 +128,18 @@ $(document).ready(function(){
                     $alertMsg.removeClass("alert-success").addClass("alert-danger")
                         .text(errorMsg)
                         .show();
-                    $btnSubmit.prop("disabled", false).css("background-color", "#007bff");
+                    $btnSubmit.prop("disabled", false).removeClass("btn-disabled");
                 }
             },
             error: function(){
                 $alertMsg.removeClass("alert-success").addClass("alert-danger")
                     .text("Terjadi kesalahan saat mengirim data!")
                     .show();
-                $btnSubmit.prop("disabled", false).css("background-color", "#007bff");
+                $btnSubmit.prop("disabled", false).removeClass("btn-disabled");
             }
         });
     });
 });
 </script>
-
-<style>
-    .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-    .alert-danger { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-</style>
-
 </body>
 </html>
