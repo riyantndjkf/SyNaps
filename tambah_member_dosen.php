@@ -1,7 +1,7 @@
 <?php
 require_once("security.php");
 require_once("class/member_grup.php");
-require_once("class/mahasiswa.php");
+require_once("class/dosen.php");
 require_once("class/grup.php");
 
 if (empty($_SESSION['npk_dosen'])) {
@@ -19,20 +19,37 @@ $idgrup = $_GET['id'];
 $grupObj = new Grup();
 $grup = $grupObj->getGrup($idgrup);
 
-$memberObj = new MemberGrup();
-$mhsObj = new Mahasiswa();
+if (!$grup || $grup['username_pembuat'] != $_SESSION['username']) {
+    header("Location: display_grup.php");
+    exit;
+}
 
-$allMahasiswa = $mhsObj->getMahasiswa();
+$memberObj = new MemberGrup();
+$dosenObj = new Dosen();
+
+$allDosen = $dosenObj->getDosen();
 
 $cari = isset($_GET['cari']) ? strtolower($_GET['cari']) : "";
-$mahasiswas = [];
+$dosens = [];
 
-foreach ($allMahasiswa as $m) {
+foreach ($allDosen as $d) {
     if ($cari == "" ||
-        str_contains(strtolower($m['nama']), $cari) ||
-        str_contains(strtolower($m['nrp']),  $cari)) {
+        str_contains(strtolower($d['nama']), $cari) ||
+        str_contains(strtolower($d['npk']),  $cari)) {
         
-        $mahasiswas[] = $m;
+        $dosens[] = $d;
+
+    require_once("class/akun.php");
+    $akunObj = new Akun();
+    $dosenList = [];
+    foreach ($dosens as $d) {
+        $akunDosen = $akunObj->getAkunByNpk($d['npk']);
+        if ($akunDosen) {
+            $d['username'] = $akunDosen['username'];
+            $dosenList[] = $d;
+        }
+    }
+    $dosens = $dosenList;
     }
 }
 ?>
@@ -40,22 +57,22 @@ foreach ($allMahasiswa as $m) {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Tambah Member Mahasiswa</title>
+    <title>Tambah Dosen ke Grup</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container wide">
     <?php
-    echo '<h1>Tambah Member ke Grup: ' . htmlentities($grup['nama']) . '</h1>';
+    echo '<h1>Tambah Dosen ke Grup: ' . htmlentities($grup['nama']) . '</h1>';
 
     if (isset($_GET['status']) && $_GET['status'] == 'added') {
-        echo '<div class="alert alert-success">Mahasiswa berhasil ditambahkan!</div>';
+        echo '<div class="alert alert-success">Dosen berhasil ditambahkan!</div>';
     }
 
     echo '<form method="get" action="" class="search-box">
         <input type="hidden" name="id" value="' . $idgrup . '">
-        <input type="text" name="cari" id="search-input" placeholder="Cari NRP atau Nama..." value="' . htmlentities($cari) . '">
+        <input type="text" name="cari" id="search-input" placeholder="Cari NPK atau Nama..." value="' . htmlentities($cari) . '">
         <button type="submit" class="btn-search">Cari</button>
     </form>';
 
@@ -64,31 +81,29 @@ foreach ($allMahasiswa as $m) {
     echo '<table>
         <thead>
             <tr>
-                <th>NRP</th>
+                <th>NPK</th>
                 <th>Nama</th>
-                <th>Gender</th>
                 <th style="text-align:center; width: 120px;">Aksi</th>
             </tr>
         </thead>
         <tbody>';
 
-    if (empty($mahasiswas)) {
-        echo '<tr><td colspan="4" style="text-align:center;">Data tidak ditemukan.</td></tr>';
+    if (empty($dosens)) {
+        echo '<tr><td colspan="3" style="text-align:center;">Data tidak ditemukan.</td></tr>';
     } else {
-        foreach ($mahasiswas as $m) {
-            $username_mhs = 's' . $m['nrp'];
-            $already = $memberObj->isMember($idgrup, $username_mhs);
+        foreach ($dosens as $d) {
+            $username_dosen = $d['username'];
+            $already = $memberObj->isMember($idgrup, $username_dosen);
 
             echo '<tr>';
-            echo '<td>' . htmlentities($m['nrp']) . '</td>';
-            echo '<td>' . htmlentities($m['nama']) . '</td>';
-            echo '<td>' . htmlentities($m['gender']) . '</td>';
+            echo '<td>' . htmlentities($d['npk']) . '</td>';
+            echo '<td>' . htmlentities($d['nama']) . '</td>';
             echo '<td style="text-align:center;">';
             
             if ($already) {
                 echo '<button class="btn-disabled" disabled>Sudah Ada</button>';
             } else {
-                echo '<button class="btn-add btn-add-member" data-group="' . $idgrup . '" data-user="' . $username_mhs . '">Tambah</button>';
+                echo '<button class="btn-add btn-add-dosen" data-group="' . $idgrup . '" data-user="' . $username_dosen . '">Tambah</button>';
             }
             
             echo '</td>';
@@ -107,13 +122,13 @@ foreach ($allMahasiswa as $m) {
 $(document).ready(function(){
     var $alertMsg = $("#alert-msg");
 
-    $(document).on("click", ".btn-add-member", function(){
+    $(document).on("click", ".btn-add-dosen", function(){
         var idgrup = $(this).data("group");
         var user = $(this).data("user");
         var $btn = $(this);
 
         $.ajax({
-            url: "ajax/tambah_member_mahasiswa.php",
+            url: "ajax/tambah_member_dosen.php",
             type: "POST",
             data: { idgrup: idgrup, user: user },
             success: function(data){
@@ -123,7 +138,7 @@ $(document).ready(function(){
 
                 if(status === "success"){
                     $alertMsg.removeClass("alert-danger").addClass("alert-success")
-                        .text("Mahasiswa berhasil ditambahkan!")
+                        .text("Dosen berhasil ditambahkan!")
                         .show();
                     
                     $btn.removeClass("btn-add").addClass("btn-disabled")
@@ -131,12 +146,9 @@ $(document).ready(function(){
                         .text("Sudah Ada");
                 } else {
                     var errorMsg = "Terjadi kesalahan!";
-                    if(parts[1] === "already_member") errorMsg = "Mahasiswa sudah menjadi member grup ini!";
+                    if(parts[1] === "already_member") errorMsg = "Dosen sudah menjadi member grup ini!";
                     else if(parts[1] === "unauthorized") errorMsg = "Anda tidak memiliki akses!";
                     else if(parts[1] === "data_incomplete") errorMsg = "Data tidak lengkap!";
-                    else if(parts[1] && parts[1].includes("db_failed")) {
-                        errorMsg = "Gagal menambah member: " + (parts.slice(1).join('|') || "Database error");
-                    }
                     
                     $alertMsg.removeClass("alert-success").addClass("alert-danger")
                         .text(errorMsg)
@@ -145,7 +157,7 @@ $(document).ready(function(){
             },
             error: function(){
                 $alertMsg.removeClass("alert-success").addClass("alert-danger")
-                    .text("Terjadi kesalahan saat menambahkan member!")
+                    .text("Terjadi kesalahan saat menambahkan dosen!")
                     .show();
             }
         });
