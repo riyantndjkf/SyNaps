@@ -12,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// Ambil data SEBELUM sanitasi (gunakan $_POST asli dari superglobal)
 $idgrup = isset($_POST['idgrup']) ? (int)$_POST['idgrup'] : 0;
 $username_mhs = isset($_POST['user']) ? trim($_POST['user']) : '';
 
@@ -21,14 +20,12 @@ if (empty($idgrup) || empty($username_mhs)) {
     exit;
 }
 
-// Cek apakah sudah member
 $memberObj = new MemberGrup();
 if ($memberObj->isMember($idgrup, $username_mhs)) {
     echo "error|already_member";
     exit;
 }
 
-// Tambah member
 if ($memberObj->addMember($idgrup, $username_mhs)) {
     echo "success|added";
 } else {

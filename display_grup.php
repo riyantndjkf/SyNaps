@@ -3,7 +3,6 @@ require_once("security.php");
 require_once("class/grup.php");
 require_once("class/member_grup.php");
 
-// Cek Login umum
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit;
@@ -12,7 +11,6 @@ if (!isset($_SESSION['username'])) {
 $grupObj = new Grup();
 $username = $_SESSION['username'];
 
-// Tentukan Peran
 $isDosen = !empty($_SESSION['npk_dosen']);
 $isMahasiswa = !empty($_SESSION['nrp_mahasiswa']);
 
@@ -20,18 +18,15 @@ $listGrupSaya = [];
 $listGrupPublik = [];
 
 if ($isDosen) {
-    // LOGIKA DOSEN
     $grupDibuat = $grupObj->getGrupByCreator($username);
     $grupIkut = $grupObj->getGrupByMember($username);
     
-    // Merge unik
     $temp = [];
     foreach ($grupDibuat as $g) $temp[$g['idgrup']] = $g;
     foreach ($grupIkut as $g) $temp[$g['idgrup']] = $g;
     $listGrupSaya = array_values($temp);
 
 } elseif ($isMahasiswa) {
-    // LOGIKA MAHASISWA
     $listGrupSaya = $grupObj->getGrupByMember($username);
     $listGrupPublik = $grupObj->getAvailablePublicGroups($username);
 }
@@ -51,7 +46,6 @@ if ($isDosen) {
         <a href="index.php"><button class="btn-back">Kembali ke Home</button></a>
         
         <?php
-        // --- BLOK NOTIFIKASI ---
         if (isset($_GET['status'])) {
             echo '<div style="margin-bottom: 15px; padding: 10px; border-radius: 5px; text-align: center; font-weight: bold;';
             
@@ -68,14 +62,12 @@ if ($isDosen) {
             echo '</div>';
         }
 
-        // --- BLOK TOMBOL DOSEN ---
         if ($isDosen) {
             echo '<div style="margin-bottom: 15px;">';
             echo '<a href="tambah_grup.php"><button class="btn-add">+ Buat Grup Baru</button></a>';
             echo '</div>';
         }
 
-        // --- BLOK FORM JOIN MAHASISWA ---
         if ($isMahasiswa) {
             echo '<div class="join-box" style="background:#e9ecef; padding:20px; border-radius:8px; margin-bottom:20px; border:1px solid #dee2e6;">
                 <h3 style="margin-top:0;">Gabung Grup Baru</h3>
@@ -91,7 +83,6 @@ if ($isDosen) {
         <h2 class="section-title">Grup Saya</h2>
         
         <?php
-        // --- TABEL GRUP SAYA ---
         if (empty($listGrupSaya)) {
             echo "<p><i>Anda belum bergabung dengan grup manapun.</i></p>";
         } else {
@@ -112,16 +103,11 @@ if ($isDosen) {
                 echo "<td>" . htmlentities($g['jenis']) . "</td>";
                 echo "<td>" . htmlentities($g['deskripsi']) . "</td>";
                 echo "<td>";
-                
-                // Tombol Detail
                 echo '<button class="detailBtn" value="' . $g['idgrup'] . '">Detail</button> ';
 
-                // Tombol Keluar / Hapus
                 if ($g['username_pembuat'] != $username) {
-                    // Tambahkan btn-update agar warna kuning (sesuai style.css)
                     echo '<button class="keluarBtn btn-update" value="' . $g['idgrup'] . '">Keluar</button>';
                 } else {
-                    // Dosen/Admin Pembuat bisa hapus
                     echo '<button class="hapusGrupBtn" value="' . $g['idgrup'] . '">Hapus</button>';
                 }
                 echo "</td>";
@@ -133,7 +119,6 @@ if ($isDosen) {
         ?>
 
         <?php
-        // --- TABEL GRUP PUBLIK (Khusus Mahasiswa) ---
         if ($isMahasiswa && !empty($listGrupPublik)) {
             echo '<h2 class="section-title">Grup Publik Lainnya</h2>';
             echo '<p style="font-size:13px; color:#666;"><i>Grup publik yang belum Anda ikuti. Gunakan kode untuk bergabung.</i></p>';
@@ -153,7 +138,6 @@ if ($isDosen) {
                 echo "<td><b>" . htmlentities($gp['nama']) . "</b></td>";
                 echo "<td>" . htmlentities($gp['deskripsi']) . "</td>";
                 echo "<td>";
-                // Tombol pancingan
                 echo "<button class='detailBtn' onclick=\"$('input[name=kode_join]').focus(); alert('Silakan masukkan kode grup ini di form atas untuk bergabung.');\">Gabung</button>";
                 echo "</td>";
                 echo "</tr>";

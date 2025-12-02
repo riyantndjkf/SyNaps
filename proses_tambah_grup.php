@@ -40,8 +40,6 @@ $arr_data = [
 ];
 
 if ($grupObj->insertGrup($arr_data)) {
-
-    // Ambil id grup baru
     $all = $grupObj->getGrup();
     $idbaru = null;
     foreach ($all as $g) {
@@ -50,8 +48,6 @@ if ($grupObj->insertGrup($arr_data)) {
             break;
         }
     }
-
-    // Tambahkan pembuat sebagai member
     if ($idbaru) {
         $mg = new MemberGrup();
         $mg->addMember($idbaru, $_SESSION['username']);

@@ -2,7 +2,6 @@
 require_once("security.php");
 require_once("class/grup.php");
 
-// Cek apakah dosen
 if (empty($_SESSION['npk_dosen'])) {
     header("Location: index.php");
     exit;
@@ -17,7 +16,6 @@ $idgrup = $_GET['id'];
 $grupObj = new Grup();
 $grup = $grupObj->getGrup($idgrup);
 
-// Validasi: Hanya pembuat yang boleh edit
 if (!$grup || $grup['username_pembuat'] != $_SESSION['username']) {
     header("Location: display_grup.php");
     exit;

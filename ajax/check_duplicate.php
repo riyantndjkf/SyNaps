@@ -1,19 +1,24 @@
 <?php
-require_once("../class/parent.php"); // Gunakan classParent untuk akses DB langsung biar cepat
-$parent = new classParent();
-$conn = new mysqli(SERVER, UID, PWD, DB);
+require_once("../class/dosen.php");
+require_once("../class/mahasiswa.php");
 
 $id = $_POST['id'];
-$type = $_POST['type']; // 'dosen' atau 'mahasiswa'
+$type = $_POST['type'];
 
-if ($type == 'dosen') {
-    $sql = "SELECT npk FROM dosen WHERE npk = '$id'";
-} else {
-    $sql = "SELECT nrp FROM mahasiswa WHERE nrp = '$id'";
+if (!in_array($type, ['dosen', 'mahasiswa'])) {
+    echo "error";
+    exit;
 }
 
-$res = $conn->query($sql);
-if ($res->num_rows > 0) {
+if ($type == 'dosen') {
+    $dosenObj = new Dosen();
+    $data = $dosenObj->getDosen($id);
+} else {
+    $mahasiswaObj = new Mahasiswa();
+    $data = $mahasiswaObj->getMahasiswa($id);
+}
+
+if ($data) {
     echo "exist";
 } else {
     echo "ok";

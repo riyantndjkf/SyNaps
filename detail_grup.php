@@ -4,7 +4,6 @@ require_once("class/grup.php");
 require_once("class/member_grup.php");
 require_once("class/event.php");
 
-// Izinkan siapa saja yang login
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit;
@@ -21,7 +20,6 @@ $grupObj = new Grup();
 $memberObj = new MemberGrup();
 $eventObj = new Event();
 
-// Data Grup
 $grup = $grupObj->getGrup($idgrup);
 
 if (!$grup) {
@@ -29,13 +27,10 @@ if (!$grup) {
     exit;
 }
 
-// Data Event & Member
 $events = $eventObj->getEventByGroup($idgrup);
 $members = $memberObj->getMembersByGroup($idgrup);
 
-// Cek Pembuat
 $isPembuat = ($grup['username_pembuat'] == $_SESSION['username']);
-// apakah dosen (bukan mahasiswa) yang login dan menjadi member grup?
 $isDosenMember = false;
 if (!empty($_SESSION['npk_dosen'])) {
     $isDosenMember = $memberObj->isMember($idgrup, $_SESSION['username']);
@@ -92,7 +87,6 @@ if (!empty($_SESSION['npk_dosen'])) {
     </table>
 
     <?php
-    // --- MENU GRUP (Hanya Pembuat) ---
     if ($isPembuat) {
         echo '<div style="background: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px;">';
         echo '<h3 style="margin-top:0;">Menu Admin Grup</h3>';
@@ -103,7 +97,6 @@ if (!empty($_SESSION['npk_dosen'])) {
         echo '</div>';
     }
 
-    // Jika user adalah pembuat atau dosen member, tunjukkan tombol tambah event
     if ($isPembuat || $isDosenMember) {
         echo '<div style="margin-bottom:20px;">';
         echo '<button class="btn-menu" onclick="location.href=\'tambah_event.php?id=' . $idgrup . '\'">+ Tambah Event</button>';
@@ -136,7 +129,6 @@ if (!empty($_SESSION['npk_dosen'])) {
                     echo '<td>' . date('d M Y H:i', strtotime($ev['tanggal'])) . '</td>';
                     echo '<td>' . nl2br(htmlentities($ev['keterangan'])) . '</td>';
                     
-                    // Kolom Poster
                     echo '<td style="text-align:center;">';
                     if (!empty($ev['poster_extension'])) {
                         echo '<img src="images/event/' . $ev['judul_slug'] . '.' . $ev['poster_extension'] . '" style="width:100px; border-radius:4px; border:1px solid #ddd;">';
@@ -145,7 +137,6 @@ if (!empty($_SESSION['npk_dosen'])) {
                     }
                     echo '</td>';
 
-                    // Kolom Aksi
                     echo '<td>';
                     if ($isPembuat || $isDosenMember) {
                         echo '<button class="btn-edit" onclick="window.location.href=\'update_event.php?id=' . $ev['idevent'] . '\'">Edit</button> ';

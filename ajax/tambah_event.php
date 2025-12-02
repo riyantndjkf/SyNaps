@@ -14,20 +14,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// Ambil data dari form
 $idgrup      = (int)($_POST['idgrup'] ?? 0);
 $judul       = trim($_POST['judul'] ?? '');
 $tanggal     = $_POST['tanggal'] ?? '';
 $keterangan  = $_POST['keterangan'] ?? '';
 $jenis       = $_POST['jenis'] ?? '';
 
-// Validasi minimal
 if (empty($judul) || empty($tanggal) || empty($jenis) || empty($idgrup)) {
     echo "error|validation_failed";
     exit;
 }
 
-// Cek apakah dosen ini adalah member grup (termasuk pembuat grup)
 $grupObj = new Grup();
 $grup = $grupObj->getGrup($idgrup);
 
@@ -41,18 +38,15 @@ $username_dosen = $_SESSION['username'];
 $isPembuat = ($grup['username_pembuat'] == $_SESSION['username']);
 $isMember = $memberObj->isMember($idgrup, $username_dosen);
 
-// Hanya pembuat grup atau member dosen yang bisa membuat event
 if (!$isPembuat && !$isMember) {
     echo "error|unauthorized";
     exit;
 }
 
-// Generate slug
 $slug = strtolower($judul);
 $slug = preg_replace('/[^a-z0-9]+/i', '-', $slug);
 $slug = trim($slug, '-');
 
-// Proses upload poster (opsional)
 $poster_extension = null;
 
 if (isset($_FILES['poster']) && $_FILES['poster']['error'] === 0) {
@@ -76,7 +70,6 @@ if (isset($_FILES['poster']) && $_FILES['poster']['error'] === 0) {
     }
 }
 
-// Insert ke database
 $eventObj = new Event();
 $arr_data = [
     'idgrup' => $idgrup,

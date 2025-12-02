@@ -6,7 +6,6 @@ class Grup extends classParent {
         parent::__construct();
     }
 
-    // Ambil grup berdasarkan idgrup atau ambil semua grup
     public function getGrup($idgrup = null) {
         if ($idgrup) {
             $sql = "SELECT * FROM grup WHERE idgrup = ?";
@@ -31,7 +30,6 @@ class Grup extends classParent {
         }
     }
 
-    // Ambil grup berdasarkan creator username (untuk home_dosen)
     public function getGrupByCreator($username) {
         $sql = "SELECT * FROM grup WHERE username_pembuat = ?";
         $stmt = $this->mysqli->prepare($sql);
@@ -67,7 +65,6 @@ class Grup extends classParent {
     return $data;
     }
 
-    // Insert grup baru
     public function insertGrup($arr_data) {
         $query = "INSERT INTO grup (username_pembuat, nama, deskripsi, tanggal_pembentukan, jenis, kode_pendaftaran) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $this->mysqli->prepare($query);
@@ -83,7 +80,6 @@ class Grup extends classParent {
         return $stmt->execute();
     }
 
-    // Update grup (opsional, jika butuh)
     public function updateGrup($idgrup, $arr_data) {
         $query = "UPDATE grup SET nama = ?, deskripsi = ?, jenis = ? WHERE idgrup = ?";
         $stmt = $this->mysqli->prepare($query);
@@ -91,14 +87,13 @@ class Grup extends classParent {
         return $stmt->execute();
     }
 
-    // Delete grup (opsional)
     public function deleteGrup($idgrup) {
         $query = "DELETE FROM grup WHERE idgrup = ?";
         $stmt = $this->mysqli->prepare($query);
         $stmt->bind_param("i", $idgrup);
         return $stmt->execute();
     }
-    //  grup publik yang belum diikuti oleh user
+
     public function getAvailablePublicGroups($username) {
         $sql = "SELECT * FROM grup 
                 WHERE jenis = 'Publik' 
@@ -116,7 +111,6 @@ class Grup extends classParent {
         return $data;
     }
 
-    // Cari grup berdasarkan kode pendaftaran
     public function getGrupByCode($kode) {
         $sql = "SELECT * FROM grup WHERE kode_pendaftaran = ?";
         $stmt = $this->mysqli->prepare($sql);

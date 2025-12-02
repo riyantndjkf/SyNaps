@@ -2,7 +2,6 @@
 require_once("security.php");
 require_once("class/akun.php");
 
-// Pastikan user login
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit;
@@ -74,7 +73,6 @@ $username = $_SESSION['username'];
                             .text("Password berhasil diubah!")
                             .show();
                         
-                        // Clear form
                         $("#formUpdatePassword")[0].reset();
                         $btnSubmit.prop("disabled", false).removeClass("btn-disabled");
                         

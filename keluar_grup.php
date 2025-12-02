@@ -8,7 +8,6 @@ $username = $_SESSION['username'];
 
 $g = (new Grup())->getGrup($idgrup);
 
-// Cegah creator keluar
 if ($g['username_pembuat'] == $username) {
     header("Location: display_grup.php?status=creator_no_exit");
     exit;

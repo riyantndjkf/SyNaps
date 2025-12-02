@@ -26,7 +26,6 @@ if (empty($judul) || empty($tanggal) || empty($jenis)) {
     exit;
 }
 
-// Ambil data lama untuk poster
 $eventObj = new Event();
 $oldEvent = $eventObj->getEvent($idevent);
 
@@ -35,7 +34,6 @@ if (!$oldEvent) {
     exit;
 }
 
-// Cek permission - apakah dosen ini adalah member grup
 $grupObj = new Grup();
 $grup = $grupObj->getGrup($idgrup);
 
@@ -49,26 +47,22 @@ $username_dosen = $_SESSION['username'];
 $isPembuat = ($grup['username_pembuat'] == $_SESSION['username']);
 $isMember = $memberObj->isMember($idgrup, $username_dosen);
 
-// Hanya pembuat grup atau member dosen yang bisa edit event
 if (!$isPembuat && !$isMember) {
     echo "error|unauthorized";
     exit;
 }
 
-// Generate slug
 $slug = strtolower($judul);
 $slug = preg_replace('/[^a-z0-9]+/i', '-', $slug);
 $slug = trim($slug, '-');
 
 $poster_extension = $oldEvent['poster_extension'];
 
-// Cek upload baru
 if (isset($_FILES['poster']) && $_FILES['poster']['error'] == 0) {
     $allowed = ['jpg', 'jpeg', 'png'];
     $ext = strtolower(pathinfo($_FILES['poster']['name'], PATHINFO_EXTENSION));
 
     if (in_array($ext, $allowed)) {
-        // Hapus poster lama
         if (!empty($poster_extension)) {
             $oldFile = "../images/event/" . $oldEvent['judul_slug'] . "." . $poster_extension;
             if (file_exists($oldFile)) unlink($oldFile);

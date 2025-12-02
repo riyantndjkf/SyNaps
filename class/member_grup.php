@@ -6,7 +6,6 @@ class MemberGrup extends classParent {
         parent::__construct();
     }
 
-    // Ambil member berdasarkan idgrup
     public function getMembersByGroup($idgrup) {
         $sql = "SELECT mg.username, a.nrp_mahasiswa, a.npk_dosen, m.nama as nama_mahasiswa, d.nama as nama_dosen
                 FROM member_grup mg
@@ -26,7 +25,6 @@ class MemberGrup extends classParent {
         return $data;
     }
 
-    // Cek apakah user sudah member
     public function isMember($idgrup, $username) {
         $sql = "SELECT * FROM member_grup WHERE idgrup = ? AND username = ?";
         $stmt = $this->mysqli->prepare($sql);
@@ -38,7 +36,6 @@ class MemberGrup extends classParent {
         return $exists ? true : false;
     }
 
-    // Tambah member
     public function addMember($idgrup, $username) {
         $sql = "INSERT INTO member_grup (idgrup, username) VALUES (?, ?)";
         $stmt = $this->mysqli->prepare($sql);
@@ -48,7 +45,6 @@ class MemberGrup extends classParent {
         return $result;
     }
 
-    // Hapus member
     public function deleteMember($idgrup, $username) {
         $sql = "DELETE FROM member_grup WHERE idgrup = ? AND username = ?";
         $stmt = $this->mysqli->prepare($sql);

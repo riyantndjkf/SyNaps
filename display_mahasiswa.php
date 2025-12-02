@@ -1,6 +1,5 @@
 <?php
 require_once("security.php");
-// Tidak perlu include class mahasiswa di sini karena diload via AJAX
 ?>
 <!DOCTYPE html>
 <html>
