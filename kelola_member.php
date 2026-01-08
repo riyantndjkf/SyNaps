@@ -86,5 +86,6 @@ $isCreator = ($grup['username_pembuat'] == $_SESSION['username']);
     ?>
 </div>
 
+<script src="theme.js"></script>
 </body>
 </html>

@@ -104,5 +104,6 @@ require_once("security.php");
          });
     });
     </script>
+    <script src="theme.js"></script>
 </body>
 </html>

@@ -102,6 +102,6 @@ $username = $_SESSION['username'];
         });
     });
     </script>
-
+    <script src="theme.js"></script>
 </body>
 </html>

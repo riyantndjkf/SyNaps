@@ -67,5 +67,6 @@ $mahasiswa = $mhsObj->getMahasiswa($_GET['nrp']);
         <a href="display_mahasiswa.php"><button type="button" class="btn-back">Kembali</button></a>
     </form>
 </div>
+<script src="theme.js"></script>
 </body>
 </html>

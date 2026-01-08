@@ -47,6 +47,6 @@ if (empty($_SESSION['npk_dosen'])) {
             <a href="display_grup.php"><button type="button" class="btn-back">Kembali</button></a>
         </form>
     </div>
-
+<script src="theme.js"></script>
 </body>
 </html>

@@ -31,7 +31,18 @@ require_once("security.php");
             <p>Gunakan menu di bawah untuk akses fitur.</p>
             
             <div class="menu">
-                <h3>Menu Utama</h3>
+                <h3 style="display:flex; justify-content:space-between; align-items:center;">
+                    Menu Utama
+                    <div class="theme-toggle">
+                        <span style="font-size:14px; font-weight:600;">Dark Mode</span>
+
+                        <label class="switch">
+                            <input type="checkbox" id="toggleTheme">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                </h3>
 
                 <?php if ($_SESSION['isadmin'] == 1): ?>
                     <a href="display_dosen.php">Kelola Dosen</a><br>
@@ -45,12 +56,15 @@ require_once("security.php");
                     <a href="display_grup.php">Lihat & Gabung Grup</a><br>
 
                 <?php endif; ?>
+
                 <a href="update_password.php">Ganti Password</a><br>
                 <hr>
-                <a href="logout.php" style="color: red;">Logout</a><br>
+                <a href="logout.php" style="color:red;">Logout</a>
             </div>
-
         </div>
     </div>
+
+    <script src="theme.js"></script>
+
 </body>
 </html>

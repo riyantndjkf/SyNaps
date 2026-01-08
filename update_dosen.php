@@ -50,5 +50,6 @@ $dosen = $dosenObj->getDosen($_GET['npk']);
         <a href="display_dosen.php"><button type="button" class="btn-back">Kembali</button></a>
     </form> 
 </div>
+<script src="theme.js"></script>
 </body>
 </html>

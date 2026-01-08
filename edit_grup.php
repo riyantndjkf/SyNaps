@@ -125,5 +125,6 @@ $(document).ready(function(){
     });
 });
 </script>
+<script src="theme.js"></script>
 </body>
 </html>

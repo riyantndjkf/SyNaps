@@ -103,13 +103,18 @@ if ($isDosen) {
                 echo "<td>" . htmlentities($g['jenis']) . "</td>";
                 echo "<td>" . htmlentities($g['deskripsi']) . "</td>";
                 echo "<td>";
-                echo '<button class="detailBtn" value="' . $g['idgrup'] . '">Detail</button> ';
+                echo '<div class="action-group">';
+
+                echo '<button class="detailBtn" value="' . $g['idgrup'] . '">Detail</button>';
+                echo '<button class="chatBtn btn-primary" value="' . $g['idgrup'] . '">Chat</button>';
 
                 if ($g['username_pembuat'] != $username) {
                     echo '<button class="keluarBtn btn-update" value="' . $g['idgrup'] . '">Keluar</button>';
                 } else {
                     echo '<button class="hapusGrupBtn" value="' . $g['idgrup'] . '">Hapus</button>';
                 }
+
+                echo '</div>';
                 echo "</td>";
                 echo "</tr>";
             }
@@ -157,6 +162,10 @@ if ($isDosen) {
             }
         });
 
+        $(".chatBtn").click(function() {
+            window.location.href = "grup_chat.php?id_grup=" + $(this).val();
+        });
+
         $(".keluarBtn").click(function() {
             if (confirm("Yakin ingin keluar dari grup ini?")) {
                 window.location.href = "keluar_grup.php?id=" + $(this).val();
@@ -171,5 +180,6 @@ if ($isDosen) {
     });
     </script>
 
+<script src="theme.js"></script>
 </body>
 </html>
