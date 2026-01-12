@@ -7,7 +7,7 @@ require_once("security.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Dosen Baru</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container">
@@ -43,7 +43,7 @@ require_once("security.php");
             <a href="display_dosen.php"><button type="button" class="btn-back">Kembali</button></a>
         </form> 
     </div>
-    <script src="jquery-3.7.1.js"></script>
+    <script src="js/jquery-3.7.1.js"></script>
     <script>
     $("#npk").on("keyup blur", function(){
         var npk = $(this).val();
@@ -65,6 +65,6 @@ require_once("security.php");
          });
     });
     </script>
-    <script src="theme.js"></script>
+    <script src="js/theme.js"></script>
 </body>
 </html>

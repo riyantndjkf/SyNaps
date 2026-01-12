@@ -11,7 +11,7 @@ if (empty($_SESSION['npk_dosen'])) {
 <head>
     <meta charset="UTF-8">
     <title>Buat Grup Baru</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -47,6 +47,6 @@ if (empty($_SESSION['npk_dosen'])) {
             <a href="display_grup.php"><button type="button" class="btn-back">Kembali</button></a>
         </form>
     </div>
-<script src="theme.js"></script>
+<script src="js/theme.js"></script>
 </body>
 </html>

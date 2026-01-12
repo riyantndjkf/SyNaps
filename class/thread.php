@@ -1,19 +1,19 @@
 <?php
 require_once "parent.php";
 
-class Thread extends ParentClass {
+class Thread extends classParent {
     
-    public function __construct($conn) {
-        parent::__construct($conn);
+    public function __construct() {
+        parent::__construct();
     }
 
     public function createThread($id_grup, $username_pembuat) {
         $sql = "INSERT INTO thread (idgrup, username_pembuat, status, tanggal_pembuatan) VALUES (?, ?, 'Open', NOW())";
-        $stmt = $this->db->prepare($sql);
+        $stmt = $this->mysqli->prepare($sql);
         $stmt->bind_param("is", $id_grup, $username_pembuat);
         
         if ($stmt->execute()) {
-            return $this->db->insert_id;
+            return $this->mysqli->insert_id;
         } else {
             return false;
         }
@@ -32,7 +32,7 @@ class Thread extends ParentClass {
                 WHERE t.idgrup = ? 
                 ORDER BY t.tanggal_pembuatan DESC";
         
-        $stmt = $this->db->prepare($sql);
+        $stmt = $this->mysqli->prepare($sql);
         $stmt->bind_param("i", $id_grup);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -47,7 +47,7 @@ class Thread extends ParentClass {
     public function getThreadById($id_thread) {
         // Sesuaikan 'id' menjadi 'idthread'
         $sql = "SELECT * FROM thread WHERE idthread = ?";
-        $stmt = $this->db->prepare($sql);
+        $stmt = $this->mysqli->prepare($sql);
         $stmt->bind_param("i", $id_thread);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -59,7 +59,7 @@ class Thread extends ParentClass {
         // Cek dulu apakah yang mau nutup adalah pemilik thread
         // Sesuaikan 'id_pembuat' jadi 'username_pembuat'
         $cek = "SELECT username_pembuat FROM thread WHERE idthread = ?";
-        $stmt_cek = $this->db->prepare($cek);
+        $stmt_cek = $this->mysqli->prepare($cek);
         $stmt_cek->bind_param("i", $id_thread);
         $stmt_cek->execute();
         $res = $stmt_cek->get_result()->fetch_assoc();
@@ -67,7 +67,7 @@ class Thread extends ParentClass {
         // Validasi kepemilikan
         if ($res && $res['username_pembuat'] == $username_login) {
             $sql = "UPDATE thread SET status = 'Close' WHERE idthread = ?";
-            $stmt = $this->db->prepare($sql);
+            $stmt = $this->mysqli->prepare($sql);
             $stmt->bind_param("i", $id_thread);
             return $stmt->execute();
         } else {

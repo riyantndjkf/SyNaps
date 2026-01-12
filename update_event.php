@@ -36,7 +36,7 @@ $isMember = $memberObj->isMember($event['idgrup'], $username_dosen);
 <head>
     <meta charset="UTF-8">
     <title>Edit Event</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -97,7 +97,7 @@ $isMember = $memberObj->isMember($event['idgrup'], $username_dosen);
     </form>
 </div>
 
-<script src="jquery-3.7.1.js"></script>
+<script src="js/jquery-3.7.1.js"></script>
 <script>
 $(document).ready(function(){
     $("#formUpdateEvent").on("submit", function(e){
@@ -153,6 +153,6 @@ $(document).ready(function(){
     });
 });
 </script>
-<script src="theme.js"></script>
+<script src="js/theme.js"></script>
 </body>
 </html>

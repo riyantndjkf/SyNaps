@@ -37,11 +37,18 @@ if ($isDosen) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Grup</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
     <div class="container wide">
+        <div class="theme-toggle">
+            <span style="font-size:14px; font-weight:600;">Dark Mode</span>
+            <label class="switch">
+                <input type="checkbox" id="toggleTheme">
+                <span class="slider"></span>
+            </label>
+        </div>
         <h1>Halaman Grup</h1>
         <a href="index.php"><button class="btn-back">Kembali ke Home</button></a>
         
@@ -153,7 +160,7 @@ if ($isDosen) {
         ?>
     </div>
 
-    <script src="jquery-3.7.1.js"></script>
+    <script src="js/jquery-3.7.1.js"></script>
     <script>
     $(function() {
         $(".detailBtn").click(function() {
@@ -163,7 +170,7 @@ if ($isDosen) {
         });
 
         $(".chatBtn").click(function() {
-            window.location.href = "grup_chat.php?id_grup=" + $(this).val();
+            window.location.href = "grup_chat.php?idgrup=" + $(this).val();
         });
 
         $(".keluarBtn").click(function() {
@@ -180,6 +187,6 @@ if ($isDosen) {
     });
     </script>
 
-<script src="theme.js"></script>
+<script src="js/theme.js"></script>
 </body>
 </html>

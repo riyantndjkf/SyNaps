@@ -7,10 +7,17 @@ require_once("security.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Dosen</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container wide">
+        <div class="theme-toggle">
+            <span style="font-size:14px; font-weight:600;">Dark Mode</span>
+            <label class="switch">
+                <input type="checkbox" id="toggleTheme">
+                <span class="slider"></span>
+            </label>
+        </div>
         <h1>Synaps Admin</h1>
         
         <div class="menu">
@@ -60,7 +67,7 @@ require_once("security.php");
         <div id="pagination-container" style="text-align: center; margin-top: 10px;"></div>
     </div>
 
-    <script src="jquery-3.7.1.js"></script>
+    <script src="js/jquery-3.7.1.js"></script>
     <script>
     $(document).ready(function(){
         
@@ -132,6 +139,6 @@ require_once("security.php");
     });
     </script>
 
-    <script src="theme.js"></script>
+    <script src="js/theme.js"></script>
 </body>
 </html>

@@ -33,7 +33,7 @@ $isMember = $memberObj->isMember($idgrup, $username_dosen);
 <head>
     <meta charset="UTF-8">
     <title>Tambah Event Baru</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -86,7 +86,7 @@ $isMember = $memberObj->isMember($idgrup, $username_dosen);
     ?>
 </div>
 
-<script src="jquery-3.7.1.js"></script>
+<script src="js/jquery-3.7.1.js"></script>
 <script>
 $(document).ready(function(){
     $("#formEvent").on("submit", function(e){
@@ -141,6 +141,6 @@ $(document).ready(function(){
     });
 });
 </script>
-<script src="theme.js"></script>
+<script src="js/theme.js"></script>
 </body>
 </html>

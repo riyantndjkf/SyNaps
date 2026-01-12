@@ -28,7 +28,7 @@ $isCreator = ($grup['username_pembuat'] == $_SESSION['username']);
 <head>
     <meta charset="UTF-8">
     <title>Kelola Member</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -86,6 +86,6 @@ $isCreator = ($grup['username_pembuat'] == $_SESSION['username']);
     ?>
 </div>
 
-<script src="theme.js"></script>
+<script src="js/theme.js"></script>
 </body>
 </html>

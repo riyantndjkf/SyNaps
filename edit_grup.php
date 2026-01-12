@@ -26,7 +26,7 @@ if (!$grup || $grup['username_pembuat'] != $_SESSION['username']) {
 <head>
     <meta charset="UTF-8">
     <title>Edit Grup</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -71,7 +71,7 @@ if (!$grup || $grup['username_pembuat'] != $_SESSION['username']) {
     ?>
 </div>
 
-<script src="jquery-3.7.1.js"></script>
+<script src="js/jquery-3.7.1.js"></script>
 <script>
 $(document).ready(function(){
     $("#formEditGrup").on("submit", function(e){
@@ -125,6 +125,6 @@ $(document).ready(function(){
     });
 });
 </script>
-<script src="theme.js"></script>
+<script src="js/theme.js"></script>
 </body>
 </html>

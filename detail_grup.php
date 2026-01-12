@@ -41,7 +41,7 @@ if (!empty($_SESSION['npk_dosen'])) {
 <head>
     <meta charset="UTF-8">
     <title>Detail Grup</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
@@ -61,6 +61,13 @@ if (!empty($_SESSION['npk_dosen'])) {
 </div>
 
 <div class="container wide">
+    <div class="theme-toggle">
+        <span style="font-size:14px; font-weight:600;">Dark Mode</span>
+        <label class="switch">
+            <input type="checkbox" id="toggleTheme">
+            <span class="slider"></span>
+        </label>
+    </div>
     <h1>Detail Grup: <?php echo htmlentities($grup['nama']); ?></h1>
 
     <a href="display_grup.php"><button class="btn-back">Kembali</button></a>
@@ -88,7 +95,7 @@ if (!empty($_SESSION['npk_dosen'])) {
 
     <?php
     if ($isPembuat) {
-        echo '<div style="background: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px;">';
+        echo '<div class="admin-menu-box">';
         echo '<h3 style="margin-top:0;">Menu Admin Grup</h3>';
         echo '<button class="btn-menu" onclick="location.href=\'edit_grup.php?id=' . $idgrup . '\'">Edit Informasi Grup</button> ';
         echo '<button class="btn-menu" onclick="location.href=\'kelola_member.php?id=' . $idgrup . '\'">Kelola Member</button> ';
@@ -178,8 +185,8 @@ if (!empty($_SESSION['npk_dosen'])) {
                     echo '</td>';
 
                     echo '<td>';
-                    if (!empty($m['nrp_mahasiswa'])) echo '<span style="background:#e2e6ea; padding:2px 6px; border-radius:4px; font-size:12px;">Mahasiswa</span>';
-                    else if (!empty($m['npk_dosen'])) echo '<span style="background:#d1ecf1; color:#0c5460; padding:2px 6px; border-radius:4px; font-size:12px;">Dosen</span>';
+                    if (!empty($m['nrp_mahasiswa'])) echo '<span class="badge-mahasiswa">Mahasiswa</span>';
+                    else if (!empty($m['npk_dosen'])) echo '<span class="badge-dosen">Dosen</span>';
                     else echo "Unknown";
                     echo '</td>';
                     
@@ -190,7 +197,7 @@ if (!empty($_SESSION['npk_dosen'])) {
         </tbody>
     </table>
 </div>
-<script src="jquery-3.7.1.js"></script>
+<script src="js/jquery-3.7.1.js"></script>
 <script>
 $(document).ready(function(){
     var modal = $("#myModal");
@@ -223,6 +230,6 @@ $(document).ready(function(){
 });
 </script>
 
-<script src="theme.js"></script>
+<script src="js/theme.js"></script>
 </body>
 </html>

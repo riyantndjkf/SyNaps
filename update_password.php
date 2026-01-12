@@ -14,7 +14,7 @@ $username = $_SESSION['username'];
 <head>
     <meta charset="UTF-8">
     <title>Ganti Password</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -44,7 +44,7 @@ $username = $_SESSION['username'];
         </form>
     </div>
 
-    <script src="jquery-3.7.1.js"></script>
+    <script src="js/jquery-3.7.1.js"></script>
     <script>
     $(document).ready(function(){
         $("#formUpdatePassword").on("submit", function(e){
@@ -102,6 +102,6 @@ $username = $_SESSION['username'];
         });
     });
     </script>
-    <script src="theme.js"></script>
+    <script src="js/theme.js"></script>
 </body>
 </html>

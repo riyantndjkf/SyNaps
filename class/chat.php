@@ -1,16 +1,16 @@
 <?php
 require_once "parent.php";
 
-class Chat extends ParentClass {
+class Chat extends classParent {
     
-    public function __construct($conn) {
-        parent::__construct($conn);
+    public function __construct() {
+        parent::__construct();
     }
 
     public function sendChat($id_thread, $username_pengirim, $isi_pesan) {
         // Sesuaikan kolom: idthread, username_pembuat, isi
         $sql = "INSERT INTO chat (idthread, username_pembuat, isi, tanggal_pembuatan) VALUES (?, ?, ?, NOW())";
-        $stmt = $this->db->prepare($sql);
+        $stmt = $this->mysqli->prepare($sql);
         $stmt->bind_param("iss", $id_thread, $username_pengirim, $isi_pesan);
         
         if($stmt->execute()) {
@@ -32,7 +32,7 @@ class Chat extends ParentClass {
                 WHERE c.idthread = ? 
                 ORDER BY c.tanggal_pembuatan ASC";
         
-        $stmt = $this->db->prepare($sql);
+        $stmt = $this->mysqli->prepare($sql);
         $stmt->bind_param("i", $id_thread);
         $stmt->execute();
         $result = $stmt->get_result();
