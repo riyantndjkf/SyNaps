@@ -7,13 +7,11 @@ $username = $_SESSION['username'];
 $namaUser = $_SESSION['nama_lengkap'] ?? 'Saya';
 $id_grup = isset($_GET['idgrup']) ? (int)$_GET['idgrup'] : 0;
 
-// Validasi ID Grup
 if ($id_grup <= 0) {
     header("Location: display_grup.php");
     exit;
 }
 
-// Ambil threads untuk grup ini
 $threads = [];
 $activeThread = null;
 try {
@@ -34,6 +32,27 @@ try {
     <title>Diskusi Grup</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* CSS Tambahan khusus Thread List agar rapi di sidebar sempit */
+        .thread {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: var(--bg-container);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .thread:hover { background: var(--bg-menu); }
+        .thread.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .thread.active .thread-title, .thread.active .thread-creator { color: white; }
+        .thread-title { font-weight: bold; font-size: 13px; margin-bottom: 2px; }
+        .thread-creator { font-size: 11px; opacity: 0.8; }
+    </style>
 </head>
 
 <body>
@@ -45,63 +64,62 @@ try {
             <span class="slider"></span>
         </label>
     </div>
-    <h1>Diskusi Grup</h1>
-    <a href="display_grup.php">
-        <button class="btn-back">Kembali ke Daftar Grup</button>
-    </a>
+    
+    <div style="display:flex; align-items:center; gap: 15px; margin-bottom:15px; padding-right: 60px;">
+        <a href="display_grup.php" style="text-decoration:none;">
+            <button class="btn-back" style="margin:0;">&larr; Kembali</button>
+        </a>
 
-    <h2 class="section-title">Forum Diskusi</h2>
+        <h1 style="margin:0; border:none; padding:0; text-align:left; font-size:24px;">Diskusi Grup</h1>
+    </div>
 
-    <div class="chat-container">
+    <div class="chat-wrapper">
 
-        <!-- PANEL THREAD -->
-        <div class="thread-panel">
-            <h3>Threads</h3>
-            <div id="thread-list">
-                <?php if (!empty($threads)): ?>
-                    <?php foreach ($threads as $thread): ?>
-                        <div class="thread <?= $thread['status'] == 'Open' ? 'open' : 'close' ?> <?= ($activeThread && $activeThread['idthread'] == $thread['idthread']) ? 'active' : '' ?>" 
-                             data-thread-id="<?= $thread['idthread'] ?>"
-                             data-thread-creator="<?= htmlentities($thread['username_pembuat']) ?>"
-                             data-thread-status="<?= htmlentities($thread['status']) ?>"
-                             onclick="loadThread(<?= $thread['idthread'] ?>, '<?= htmlentities($thread['username_pembuat']) ?>', '<?= htmlentities($thread['status']) ?>')">
-                            <div class="thread-title">Thread #<?= $thread['idthread'] ?></div>
-                            <div class="thread-creator">oleh <?= htmlentities($thread['nama_pembuat'] ?? $thread['username_pembuat']) ?></div>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p style="font-size:12px; opacity:0.7;">Tidak ada thread</p>
-                <?php endif; ?>
-            </div>
-            <button class="btn-primary" style="width:100%; margin-top:10px;" onclick="createNewThread()">+ Thread Baru</button>
-        </div>
-
-        <!-- PANEL CHAT -->
-        <div class="chat-panel">
-
-            <div class="chat-header">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div>
-                        <b id="current-thread-title"><?= $activeThread ? 'Thread #' . htmlentities($activeThread['idthread']) : 'Pilih Thread' ?></b>
-                        <span id="thread-status" style="font-size:12px; opacity:0.7;">
-                            <?= $activeThread ? ($activeThread['status'] == 'Open' ? '(Terbuka)' : '(Ditutup)') : '' ?>
-                        </span>
-                    </div>
-                    <button id="btn-close-thread" class="btn-delete" style="display:none; padding:6px 12px; font-size:12px;" onclick="closeCurrentThread()">Tutup Thread</button>
+        <div class="chat-sidebar" id="chat-sidebar">
+            <div style="padding:15px;">
+                <h3 style="font-size:16px; margin-top:0;">Threads</h3>
+                <button class="btn-primary" style="width:100%; margin-bottom:15px; font-size:12px;" onclick="createNewThread()">+ Thread Baru</button>
+                
+                <div id="thread-list">
+                    <?php if (!empty($threads)): ?>
+                        <?php foreach ($threads as $thread): ?>
+                            <div class="thread <?= $thread['status'] == 'Open' ? 'open' : 'close' ?> <?= ($activeThread && $activeThread['idthread'] == $thread['idthread']) ? 'active' : '' ?>" 
+                                 data-thread-id="<?= $thread['idthread'] ?>"
+                                 data-thread-creator="<?= htmlentities($thread['username_pembuat']) ?>"
+                                 data-thread-status="<?= htmlentities($thread['status']) ?>"
+                                 onclick="loadThread(<?= $thread['idthread'] ?>, '<?= htmlentities($thread['username_pembuat']) ?>', '<?= htmlentities($thread['status']) ?>')">
+                                <div class="thread-title">#<?= $thread['idthread'] ?></div>
+                                <div class="thread-creator"><?= htmlentities($thread['nama_pembuat'] ?? $thread['username_pembuat']) ?></div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p style="font-size:12px; opacity:0.7; text-align:center;">Tidak ada thread</p>
+                    <?php endif; ?>
                 </div>
             </div>
-
-            <div class="chat-box" id="chat-box">
-                <div style="text-align:center; opacity:0.5;">Pilih thread untuk mulai chat...</div>
-            </div>
-
-            <!-- INPUT CHAT -->
-            <div class="chat-input" id="chat-input-container">
-                <input type="text" id="chat-message" placeholder="Ketik pesan..." />
-                <button class="btn-primary" onclick="sendChat()">Kirim</button>
-            </div>
-
         </div>
+
+        <div class="chat-main">
+            <div class="chat-header" style="padding:10px 15px; border-bottom:1px solid var(--border-color); background:var(--bg-table-head); height: 50px; display:flex; align-items:center; justify-content:space-between;">
+                <div style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">
+                    <b id="current-thread-title"><?= $activeThread ? 'Thread #' . htmlentities($activeThread['idthread']) : 'Pilih Thread' ?></b>
+                    <span id="thread-status" style="font-size:11px; opacity:0.7; margin-left:5px;">
+                        <?= $activeThread ? ($activeThread['status'] == 'Open' ? '(Terbuka)' : '(Ditutup)') : '' ?>
+                    </span>
+                </div>
+                <button id="btn-close-thread" class="btn-delete" style="display:none; padding:4px 8px; font-size:11px; margin:0;" onclick="closeCurrentThread()">Tutup</button>
+            </div>
+
+            <div class="chat-messages" id="chat-box">
+                <div style="text-align:center; opacity:0.5; margin-top:20px;">Pilih thread untuk mulai chat...</div>
+            </div>
+
+            <div class="chat-input-area">
+                <textarea id="chat-message" rows="1" placeholder="Ketik pesan..."></textarea>
+                <button class="btn-primary" style="margin:0; border-radius:20px; padding:10px 20px;" onclick="sendChat()">Kirim</button>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -109,65 +127,56 @@ try {
 <script src="js/theme.js"></script>
 
 <script>
-    // Global variables
     let currentThreadId = <?= $activeThread ? $activeThread['idthread'] : 0 ?>;
     let currentThreadCreator = '<?= $activeThread ? htmlentities($activeThread['username_pembuat']) : '' ?>';
     let currentThreadStatus = '<?= $activeThread ? htmlentities($activeThread['status']) : '' ?>';
     let lastChatId = 0;
     let pollInterval = null;
     const currentUser = '<?= htmlentities($username) ?>';
-    const currentUserName = '<?= htmlentities($namaUser) ?>';
-    const idGrup = <?= $id_grup ?>;
-
-    // Load thread ke dalam chat box
+    
     function loadThread(threadId, threadCreator, threadStatus) {
         currentThreadId = threadId;
         currentThreadCreator = threadCreator;
         currentThreadStatus = threadStatus;
         lastChatId = 0;
         
-        // Update UI
         document.querySelectorAll('.thread').forEach(el => el.classList.remove('active'));
-        event.target.closest('.thread').classList.add('active');
+        event.currentTarget.classList.add('active');
         
         document.getElementById('current-thread-title').textContent = 'Thread #' + threadId;
         document.getElementById('thread-status').textContent = threadStatus === 'Open' ? '(Terbuka)' : '(Ditutup)';
-        document.getElementById('chat-box').innerHTML = '<div style="text-align:center; opacity:0.5;">Loading chat...</div>';
+        document.getElementById('chat-box').innerHTML = '<div style="text-align:center; opacity:0.5; padding:20px;">Loading...</div>';
         
-        // Tampilkan/sembunyikan button close thread
         const btnClose = document.getElementById('btn-close-thread');
         if (threadCreator === currentUser && threadStatus === 'Open') {
-            btnClose.style.display = 'inline-block';
+            btnClose.style.display = 'block';
         } else {
             btnClose.style.display = 'none';
         }
         
-        // Disable/enable input jika thread closed
         const chatInput = document.getElementById('chat-message');
-        const btnSend = document.querySelector('.chat-input button');
+        const btnSend = document.querySelector('.chat-input-area button');
+        
         if (threadStatus === 'Close') {
             chatInput.disabled = true;
             chatInput.placeholder = 'Thread sudah ditutup';
             btnSend.disabled = true;
-            btnSend.classList.add('btn-disabled');
+            btnSend.style.backgroundColor = '#ccc';
         } else {
             chatInput.disabled = false;
             chatInput.placeholder = 'Ketik pesan...';
             btnSend.disabled = false;
-            btnSend.classList.remove('btn-disabled');
+            btnSend.style.backgroundColor = '';
         }
         
-        // Load chat
         loadChats();
-        
-        // Start polling
         if (pollInterval) clearInterval(pollInterval);
-        pollInterval = setInterval(() => {
-            loadChats(true);
-        }, 2000); // Poll setiap 2 detik
+        pollInterval = setInterval(() => { loadChats(true); }, 2000);
+        if(window.innerWidth <= 768) {
+             document.querySelector('.chat-main').scrollIntoView({behavior: 'smooth'});
+        }
     }
 
-    // Load chat dari AJAX
     function loadChats(isPolling = false) {
         if (currentThreadId <= 0) return;
 
@@ -175,193 +184,105 @@ try {
             url: 'ajax/get_chats.php',
             type: 'GET',
             dataType: 'json',
-            data: {
-                idthread: currentThreadId,
-                last_id: isPolling ? lastChatId : 0
-            },
+            data: { idthread: currentThreadId, last_id: isPolling ? lastChatId : 0 },
             success: function(response) {
                 if (response.status === 'success') {
-                    if (!isPolling) {
-                        // Initial load: display semua chat
-                        if (response.chats.length > 0) {
-                            let html = '';
-                            response.chats.forEach(chat => {
-                                html += createChatBubble(chat, response.current_user);
-                                lastChatId = Math.max(lastChatId, chat.idchat);
-                            });
-                            document.getElementById('chat-box').innerHTML = html;
-                        } else {
-                            // Tidak ada chat
-                            document.getElementById('chat-box').innerHTML = '<div style="text-align:center; opacity:0.5; padding:20px;">Belum ada pesan. Mulai percakapan!</div>';
-                        }
-                        scrollToBottom();
-                    } else if (isPolling && response.chats.length > 0) {
-                        // Polling: append chat baru saja
+                    if (response.chats.length > 0) {
                         let html = '';
                         response.chats.forEach(chat => {
                             html += createChatBubble(chat, response.current_user);
                             lastChatId = Math.max(lastChatId, chat.idchat);
                         });
-                        document.getElementById('chat-box').innerHTML += html;
-                        scrollToBottom();
+                        
+                        const chatBox = document.getElementById('chat-box');
+                        const isScrolledToBottom = chatBox.scrollHeight - chatBox.scrollTop <= chatBox.clientHeight + 100;
+
+                        if (!isPolling) {
+                            chatBox.innerHTML = html;
+                            scrollToBottom();
+                        } else {
+                            chatBox.insertAdjacentHTML('beforeend', html);
+                            if(isScrolledToBottom) scrollToBottom();
+                        }
+                    } else if (!isPolling) {
+                        document.getElementById('chat-box').innerHTML = '<div style="text-align:center; opacity:0.5; padding:20px;">Belum ada pesan.</div>';
                     }
-                } else {
-                    console.error('Error:', response.message);
                 }
-            },
-            error: function(xhr) {
-                console.error('AJAX error:', xhr);
             }
         });
     }
 
-    // Create chat bubble HTML
     function createChatBubble(chat, currentUser) {
         const isMe = chat.username_pembuat === currentUser;
-        const className = isMe ? 'me' : 'other';
+        const className = isMe ? 'me' : 'you'; 
         const nama = chat.nama_pengirim || chat.username_pembuat;
-        const waktu = new Date(chat.tanggal_pembuatan).toLocaleTimeString('id-ID');
+        const date = new Date(chat.tanggal_pembuatan);
+        const waktu = date.getHours() + ':' + (date.getMinutes()<10?'0':'') + date.getMinutes();
         
-        return `<div class="chat ${className}">
-                    <div class="author">${nama}</div>
-                    <div style="word-wrap: break-word;">${escapeHtml(chat.isi)}</div>
-                    <div class="time">${waktu}</div>
+        return `<div class="bubble ${className}" style="margin-bottom:10px;">
+                    <div style="font-weight:bold; font-size:11px; margin-bottom:2px;">${nama}</div>
+                    <div>${escapeHtml(chat.isi)}</div>
+                    <div style="font-size:10px; opacity:0.6; text-align:right; margin-top:4px;">${waktu}</div>
                 </div>`;
     }
 
-    // Send chat
     function sendChat() {
-        const message = document.getElementById('chat-message').value.trim();
+        const messageInput = document.getElementById('chat-message');
+        const message = messageInput.value.trim();
         
-        // Validasi client-side
-        if (!message) {
-            alert('Pesan tidak boleh kosong!');
-            return;
-        }
-        
-        if (currentThreadId <= 0) {
-            alert('Pilih thread terlebih dahulu!');
-            return;
-        }
+        if (!message || currentThreadId <= 0) return;
 
         $.ajax({
             url: 'ajax/send_chat.php',
             type: 'POST',
             dataType: 'json',
-            data: {
-                idthread: currentThreadId,
-                isi: message
-            },
+            data: { idthread: currentThreadId, isi: message },
             success: function(response) {
                 if (response.status === 'success') {
-                    document.getElementById('chat-message').value = '';
-                    // Chat akan muncul di polling berikutnya
-                    loadChats(false); // Refresh immediate
+                    messageInput.value = '';
+                    loadChats(false);
+                    scrollToBottom();
                 } else {
-                    alert('Error: ' + response.message);
+                    alert('Gagal: ' + response.message);
                 }
-            },
-            error: function(xhr) {
-                alert('Gagal mengirim pesan');
-                console.error('AJAX error:', xhr);
             }
         });
     }
-
-    // Create new thread
+    
     function createNewThread() {
-        if (idGrup <= 0) {
-            alert('Grup ID tidak valid');
-            return;
-        }
-
-        $.ajax({
-            url: 'ajax/create_thread.php',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                idgrup: idGrup
-            },
-            success: function(response) {
-                if (response.status === 'success') {
-                    alert('Thread baru berhasil dibuat!');
-                    location.reload();
-                } else {
-                    alert('Error: ' + response.message);
-                }
-            },
-            error: function(xhr) {
-                alert('Gagal membuat thread');
-                console.error('AJAX error:', xhr);
-            }
-        });
+        const idGrup = <?= $id_grup ?>;
+        $.post('ajax/create_thread.php', {idgrup: idGrup}, function(res){
+            location.reload();
+        }, 'json');
     }
 
-    // Close current thread
     function closeCurrentThread() {
-        if (!confirm('Yakin ingin menutup thread ini? Thread yang ditutup tidak bisa dibuka lagi.')) {
-            return;
+        if(confirm('Tutup thread ini?')) {
+            $.post('ajax/close_thread.php', {idthread: currentThreadId}, function(res){
+                location.reload();
+            }, 'json');
         }
-
-        if (currentThreadId <= 0) {
-            alert('Thread ID tidak valid');
-            return;
-        }
-
-        $.ajax({
-            url: 'ajax/close_thread.php',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                idthread: currentThreadId
-            },
-            success: function(response) {
-                if (response.status === 'success') {
-                    alert('Thread berhasil ditutup');
-                    location.reload();
-                } else {
-                    alert('Error: ' + response.message);
-                }
-            },
-            error: function(xhr) {
-                alert('Gagal menutup thread');
-                console.error('AJAX error:', xhr);
-            }
-        });
     }
 
-    // Helper function: scroll to bottom
     function scrollToBottom() {
         const chatBox = document.getElementById('chat-box');
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    // Helper function: escape HTML
     function escapeHtml(text) {
-        const map = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#039;'
-        };
-        return text.replace(/[&<>"']/g, m => map[m]);
+        if (!text) return text;
+        return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
-    // Event listener: send chat dengan Enter key
     document.getElementById('chat-message').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             sendChat();
         }
     });
 
-    // Initial load
     if (currentThreadId > 0) {
-        loadChats();
-        pollInterval = setInterval(() => {
-            loadChats(true);
-        }, 2000);
+        loadThread(currentThreadId, currentThreadCreator, currentThreadStatus);
     }
 </script>
 

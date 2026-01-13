@@ -4,7 +4,6 @@ require_once("../class/chat.php");
 require_once("../class/thread.php");
 require_once("../class/koneksi.php");
 
-// Validasi request method
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);

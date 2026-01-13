@@ -5,17 +5,14 @@ require_once("../class/grup.php");
 require_once("../class/member_grup.php");
 require_once("../class/koneksi.php");
 
-// Validasi request method
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
     exit;
 }
 
-// Ambil parameter
 $id_grup = isset($_POST['idgrup']) ? (int)$_POST['idgrup'] : 0;
 
-// Validasi parameter
 if ($id_grup <= 0) {
     http_response_code(400);
     echo json_encode(['status' => 'error', 'message' => 'Invalid grup ID']);
@@ -23,7 +20,6 @@ if ($id_grup <= 0) {
 }
 
 try {
-    // Cek apakah user adalah member atau pembuat grup
     $grupObj = new Grup();
     $grup = $grupObj->getGrup($id_grup);
     
@@ -44,7 +40,6 @@ try {
         exit;
     }
     
-    // Buat thread baru
     $threadObj = new Thread();
     $new_thread_id = $threadObj->createThread($id_grup, $username);
     

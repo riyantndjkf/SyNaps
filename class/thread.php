@@ -19,10 +19,7 @@ class Thread extends classParent {
         }
     }
     
-    // 2. Mengambil Daftar Thread dalam Grup
     public function getThreads($id_grup) {
-        // Query ini melakukan JOIN ke tabel akun, lalu ke mahasiswa/dosen 
-        // untuk mengambil nama asli si pembuat thread.
         $sql = "SELECT t.*, 
                        COALESCE(mhs.nama, dsn.nama, t.username_pembuat) as nama_pembuat 
                 FROM thread t 
@@ -45,7 +42,6 @@ class Thread extends classParent {
     }
 
     public function getThreadById($id_thread) {
-        // Sesuaikan 'id' menjadi 'idthread'
         $sql = "SELECT * FROM thread WHERE idthread = ?";
         $stmt = $this->mysqli->prepare($sql);
         $stmt->bind_param("i", $id_thread);
@@ -54,17 +50,13 @@ class Thread extends classParent {
         return $result->fetch_assoc();
     }
 
-    // 4. Menutup Thread (Close) - Hanya Pembuat yang bisa
     public function closeThread($id_thread, $username_login) {
-        // Cek dulu apakah yang mau nutup adalah pemilik thread
-        // Sesuaikan 'id_pembuat' jadi 'username_pembuat'
         $cek = "SELECT username_pembuat FROM thread WHERE idthread = ?";
         $stmt_cek = $this->mysqli->prepare($cek);
         $stmt_cek->bind_param("i", $id_thread);
         $stmt_cek->execute();
         $res = $stmt_cek->get_result()->fetch_assoc();
 
-        // Validasi kepemilikan
         if ($res && $res['username_pembuat'] == $username_login) {
             $sql = "UPDATE thread SET status = 'Close' WHERE idthread = ?";
             $stmt = $this->mysqli->prepare($sql);

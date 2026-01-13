@@ -49,13 +49,13 @@ if ($isDosen) {
                 <span class="slider"></span>
             </label>
         </div>
+        
         <h1>Halaman Grup</h1>
         <a href="index.php"><button class="btn-back">Kembali ke Home</button></a>
         
         <?php
         if (isset($_GET['status'])) {
             echo '<div style="margin-bottom: 15px; padding: 10px; border-radius: 5px; text-align: center; font-weight: bold;';
-            
             if ($_GET['status'] == 'success' || $_GET['status'] == 'join_success' || $_GET['status'] == 'keluar_success' || $_GET['status'] == 'deleted') {
                 echo 'background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;">';
                 if ($_GET['status'] == 'deleted') echo "Grup berhasil dihapus.";
@@ -76,7 +76,7 @@ if ($isDosen) {
         }
 
         if ($isMahasiswa) {
-            echo '<div class="join-box" style="background:#e9ecef; padding:20px; border-radius:8px; margin-bottom:20px; border:1px solid #dee2e6;">
+            echo '<div class="join-box" style="background:var(--bg-menu); padding:20px; border-radius:8px; margin-bottom:20px; border:1px solid var(--border-color);">
                 <h3 style="margin-top:0;">Gabung Grup Baru</h3>
                 <form method="post" action="proses_join_grup.php" class="search-box">
                     <label style="margin-right:10px;">Masukkan Kode Grup: </label>
@@ -89,75 +89,49 @@ if ($isDosen) {
 
         <h2 class="section-title">Grup Saya</h2>
         
-        <?php
-        if (empty($listGrupSaya)) {
-            echo "<p><i>Anda belum bergabung dengan grup manapun.</i></p>";
-        } else {
-            echo '<table>
-                <thead>
-                    <tr>
-                        <th>Nama Grup</th>
-                        <th>Jenis</th>
-                        <th>Deskripsi</th>
-                        <th style="width: 180px;">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>';
+        <?php if (empty($listGrupSaya)) { ?>
+            <p><i>Anda belum bergabung dengan grup manapun.</i></p>
+        <?php } else { ?>
             
-            foreach ($listGrupSaya as $g) {
-                echo "<tr>";
-                echo "<td><b>" . htmlentities($g['nama']) . "</b></td>";
-                echo "<td>" . htmlentities($g['jenis']) . "</td>";
-                echo "<td>" . htmlentities($g['deskripsi']) . "</td>";
-                echo "<td>";
-                echo '<div class="action-group">';
+            <div class="container-grid">
+                <?php foreach ($listGrupSaya as $g) { ?>
+                    <div class="grup-card">
+                        <h3><?= htmlentities($g['nama']) ?></h3>
+                        <p><strong>Jenis:</strong> <?= htmlentities($g['jenis']) ?></p>
+                        <p><?= htmlentities($g['deskripsi']) ?></p>
+                        
+                        <div class="action-group" style="margin-top:auto; padding-top:15px; border-top:1px solid var(--border-light);">
+                            <button class="detailBtn" value="<?= $g['idgrup'] ?>">Detail</button>
+                            <button class="chatBtn btn-primary" value="<?= $g['idgrup'] ?>">Chat</button>
 
-                echo '<button class="detailBtn" value="' . $g['idgrup'] . '">Detail</button>';
-                echo '<button class="chatBtn btn-primary" value="' . $g['idgrup'] . '">Chat</button>';
+                            <?php if ($g['username_pembuat'] != $username) { ?>
+                                <button class="keluarBtn btn-update" value="<?= $g['idgrup'] ?>">Keluar</button>
+                            <?php } else { ?>
+                                <button class="hapusGrupBtn" value="<?= $g['idgrup'] ?>">Hapus</button>
+                            <?php } ?>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
 
-                if ($g['username_pembuat'] != $username) {
-                    echo '<button class="keluarBtn btn-update" value="' . $g['idgrup'] . '">Keluar</button>';
-                } else {
-                    echo '<button class="hapusGrupBtn" value="' . $g['idgrup'] . '">Hapus</button>';
-                }
+        <?php } ?>
 
-                echo '</div>';
-                echo "</td>";
-                echo "</tr>";
-            }
+        <?php if ($isMahasiswa && !empty($listGrupPublik)) { ?>
+            <h2 class="section-title" style="margin-top:40px;">Grup Publik Lainnya</h2>
+            <p style="font-size:13px; color:var(--text-secondary);"><i>Grup publik yang belum Anda ikuti.</i></p>
             
-            echo '</tbody></table>';
-        }
-        ?>
-
-        <?php
-        if ($isMahasiswa && !empty($listGrupPublik)) {
-            echo '<h2 class="section-title">Grup Publik Lainnya</h2>';
-            echo '<p style="font-size:13px; color:#666;"><i>Grup publik yang belum Anda ikuti. Gunakan kode untuk bergabung.</i></p>';
-            
-            echo '<table>
-                <thead>
-                    <tr>
-                        <th>Nama Grup</th>
-                        <th>Deskripsi</th>
-                        <th style="width: 100px;">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>';
-
-            foreach ($listGrupPublik as $gp) {
-                echo "<tr>";
-                echo "<td><b>" . htmlentities($gp['nama']) . "</b></td>";
-                echo "<td>" . htmlentities($gp['deskripsi']) . "</td>";
-                echo "<td>";
-                echo "<button class='detailBtn' onclick=\"$('input[name=kode_join]').focus(); alert('Silakan masukkan kode grup ini di form atas untuk bergabung.');\">Gabung</button>";
-                echo "</td>";
-                echo "</tr>";
-            }
-
-            echo '</tbody></table>';
-        }
-        ?>
+            <div class="container-grid">
+                <?php foreach ($listGrupPublik as $gp) { ?>
+                    <div class="grup-card">
+                        <h3><?= htmlentities($gp['nama']) ?></h3>
+                        <p><?= htmlentities($gp['deskripsi']) ?></p>
+                        <div style="margin-top:auto;">
+                            <button class="detailBtn" onclick="$('input[name=kode_join]').focus(); alert('Silakan masukkan kode grup ini di form atas untuk bergabung.');">Gabung</button>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
+        <?php } ?>
     </div>
 
     <script src="js/jquery-3.7.1.js"></script>
@@ -186,7 +160,6 @@ if ($isDosen) {
         });
     });
     </script>
-
-<script src="js/theme.js"></script>
+    <script src="js/theme.js"></script>
 </body>
 </html>

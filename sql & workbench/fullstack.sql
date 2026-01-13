@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2025 at 04:17 PM
+-- Generation Time: Jan 13, 2026 at 03:54 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -63,6 +63,16 @@ CREATE TABLE `chat` (
   `isi` text DEFAULT NULL,
   `tanggal_pembuatan` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `chat`
+--
+
+INSERT INTO `chat` (`idchat`, `idthread`, `username_pembuat`, `isi`, `tanggal_pembuatan`) VALUES
+(1, 1, 'heru', 'Halo semua, untuk rapat teknis ILPC kita adakan hari Jumat ya di Ruang Rapat.', '2025-12-01 09:05:00'),
+(2, 2, 'tyrza', 'Tolong desain poster segera direvisi bagian logonya sebelum dicetak.', '2025-12-02 13:35:00'),
+(3, 2, 's160423125', 'Baik Bu, akan segera saya perbaiki malam ini.', '2025-12-02 14:00:00'),
+(4, 3, 'ming', 'Masalah konsumsi sudah fix, thread ini saya tutup.', '2025-12-03 11:00:00');
 
 -- --------------------------------------------------------
 
@@ -193,6 +203,16 @@ CREATE TABLE `thread` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
+-- Dumping data for table `thread`
+--
+
+INSERT INTO `thread` (`idthread`, `username_pembuat`, `idgrup`, `tanggal_pembuatan`, `status`) VALUES
+(1, 'heru', 1, '2025-12-01 09:00:00', 'Open'),
+(2, 'tyrza', 2, '2025-12-02 13:30:00', 'Open'),
+(3, 'ming', 3, '2025-12-03 10:15:00', 'Close'),
+(4, 'fikri', 4, '2025-12-04 08:00:00', 'Open');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -262,7 +282,7 @@ ALTER TABLE `thread`
 -- AUTO_INCREMENT for table `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `idchat` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idchat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `event`
@@ -280,7 +300,7 @@ ALTER TABLE `grup`
 -- AUTO_INCREMENT for table `thread`
 --
 ALTER TABLE `thread`
-  MODIFY `idthread` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idthread` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
